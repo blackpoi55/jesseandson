@@ -5,6 +5,30 @@ import { Hand, Maximize2, Minus, Pause, Play, Plus, RotateCw } from "lucide-reac
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
+type Frame = ImageBitmap | HTMLImageElement;
+
+const frameWidth = (f: Frame) => ("naturalWidth" in f ? f.naturalWidth : f.width);
+const frameHeight = (f: Frame) => ("naturalHeight" in f ? f.naturalHeight : f.height);
+const closeFrame = (f: Frame) => {
+  if ("close" in f) f.close();
+};
+
+/** Download and fully decode a frame up front so drawing it never stalls. */
+async function decodeFrame(src: string): Promise<Frame> {
+  const img = new Image();
+  img.decoding = "async";
+  img.src = src;
+  await img.decode();
+  if (typeof createImageBitmap === "function") {
+    try {
+      return await createImageBitmap(img);
+    } catch {
+      /* fall back to the decoded <img> */
+    }
+  }
+  return img;
+}
+
 /**
  * 360° product spin: grab the image and drag to turn it, like a 3D model.
  * Works from an image sequence (one photo every few degrees), so real
@@ -31,9 +55,11 @@ export function SpinViewer({
   const count = frames.length;
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const images = useRef<(HTMLImageElement | null)[]>([]);
+  const bitmaps = useRef<(Frame | null)[]>([]);
   const pos = useRef(0); // fractional frame position
-  const velocity = useRef(0);
+  const velocity = useRef(0); // frames per second from a fling
+  const autoSpeed = useRef(0); // eased idle-spin speed, frames per second
+  const shownFrame = useRef(-1);
   const drag = useRef<{ x: number; pos: number; t: number; lastX: number } | null>(null);
   const raf = useRef(0);
   const idleSince = useRef(0);
@@ -51,29 +77,40 @@ export function SpinViewer({
   const [inView, setInView] = useState(false);
 
   /* ---------- drawing ---------- */
+  // Blends the two frames either side of the current angle, so motion stays
+  // fluid at 60fps even though the photographs are 5° apart.
   const draw = useCallback(
-    (index: number) => {
+    (p: number) => {
       const c = canvas.current;
-      if (!c) return;
-      // nearest frame that has finished loading
-      let img: HTMLImageElement | null = null;
-      for (let d = 0; d < count && !img; d++) {
-        for (const i of [index + d, index - d]) {
-          const cand = images.current[((i % count) + count) % count];
-          if (cand?.complete && cand.naturalWidth) {
-            img = cand;
-            break;
-          }
+      const ctx = c?.getContext("2d");
+      if (!c || !ctx) return;
+      const base = Math.floor(p);
+      const mix = p - base;
+      const i0 = ((base % count) + count) % count;
+      let a = bitmaps.current[i0];
+      let b = bitmaps.current[(i0 + 1) % count];
+      if (!a || !b) {
+        // still loading: show the nearest decoded frame
+        const target = Math.round(p);
+        a = null;
+        b = null;
+        for (let d = 0; d < count && !a; d++) {
+          a = bitmaps.current[(((target + d) % count) + count) % count] ?? bitmaps.current[(((target - d) % count) + count) % count];
         }
+        if (!a) return;
       }
-      if (!img) return;
-      const ctx = c.getContext("2d");
-      if (!ctx) return;
-      if (c.width !== img.naturalWidth) {
-        c.width = img.naturalWidth;
-        c.height = img.naturalHeight;
+      const w = frameWidth(a);
+      if (c.width !== w) {
+        c.width = w;
+        c.height = frameHeight(a);
       }
-      ctx.drawImage(img, 0, 0);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(a, 0, 0);
+      if (b && mix > 0.004) {
+        ctx.globalAlpha = mix;
+        ctx.drawImage(b, 0, 0);
+        ctx.globalAlpha = 1;
+      }
     },
     [count],
   );
@@ -81,35 +118,39 @@ export function SpinViewer({
   const show = useCallback(
     (p: number) => {
       pos.current = ((p % count) + count) % count;
+      draw(pos.current);
+      // only re-render React when the displayed degree changes
       const i = Math.round(pos.current) % count;
-      setFrame(i);
-      draw(i);
+      if (i !== shownFrame.current) {
+        shownFrame.current = i;
+        setFrame(i);
+      }
     },
     [count, draw],
   );
 
-  /* ---------- progressive preload ---------- */
+  /* ---------- progressive, pre-decoded loading ---------- */
   useEffect(() => {
-    images.current = new Array(count).fill(null);
+    bitmaps.current = new Array(count).fill(null);
     let cancelled = false;
-    // coarse pass (every 6th frame) then fill in the gaps
+    // coarse pass first (every 6th frame), then fill in the gaps
     const order: number[] = [];
     for (const stride of [6, 3, 1]) for (let i = 0; i < count; i += stride) if (!order.includes(i)) order.push(i);
     let n = 0;
     order.forEach((i, k) => {
-      const img = new Image();
-      img.decoding = "async";
-      img.onload = () => {
-        if (cancelled) return;
-        n += 1;
-        setProgressState({ key: setKey, n });
-        if (i === Math.round(pos.current) % count || k === 0) draw(Math.round(pos.current) % count);
-      };
-      img.src = frames[i];
-      images.current[i] = img;
+      decodeFrame(frames[i])
+        .then((f) => {
+          if (cancelled) return closeFrame(f);
+          bitmaps.current[i] = f;
+          n += 1;
+          setProgressState({ key: setKey, n });
+          if (k === 0 || Math.abs(i - pos.current) <= 1) draw(pos.current);
+        })
+        .catch(() => {});
     });
     return () => {
       cancelled = true;
+      bitmaps.current.forEach((f) => f && closeFrame(f));
     };
   }, [frames, count, draw, setKey]);
 
@@ -117,24 +158,36 @@ export function SpinViewer({
   useEffect(() => {
     const el = wrap.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.25 });
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.2 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  /* ---------- animation loop: inertia + auto-rotate ---------- */
+  /* ---------- animation loop: eased idle spin + fling inertia ---------- */
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cruise = count / 18; // one full turn every ~18s
     let last = performance.now();
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      if (!drag.current) {
-        if (Math.abs(velocity.current) > 0.05) {
-          show(pos.current + velocity.current * dt);
-          velocity.current *= Math.pow(0.04, dt); // friction
-        } else if (playing && inView && !reduced && zoom === 1 && now - idleSince.current > 1800) {
-          show(pos.current + (count / 14) * dt); // one turn every ~14s
+      if (drag.current) {
+        autoSpeed.current = 0;
+      } else {
+        const wantSpin = playing && inView && !reduced && zoom === 1 && now - idleSince.current > 1500;
+        // ease in and out instead of starting/stopping abruptly
+        autoSpeed.current += ((wantSpin ? cruise : 0) - autoSpeed.current) * Math.min(1, dt * 2.2);
+        if (!wantSpin && autoSpeed.current < 0.25) autoSpeed.current = 0;
+        if (Math.abs(velocity.current) < 0.25) velocity.current = 0;
+        const delta = (autoSpeed.current + velocity.current) * dt;
+        velocity.current *= Math.pow(0.05, dt); // friction
+        if (delta !== 0) {
+          show(pos.current + delta);
+        } else {
+          // at rest: glide onto the nearest photograph so the still image is crisp
+          const off = Math.round(pos.current) - pos.current;
+          if (Math.abs(off) > 0.002) show(pos.current + off * Math.min(1, dt * 9));
+          else if (off !== 0) show(Math.round(pos.current));
         }
       }
       raf.current = requestAnimationFrame(tick);
@@ -148,8 +201,12 @@ export function SpinViewer({
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (zoom > 1) return;
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     drag.current = { x: e.clientX, pos: pos.current, t: performance.now(), lastX: e.clientX };
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    } catch {
+      /* capture is a nicety; dragging still works without it */
+    }
     velocity.current = 0;
     setGrabbing(true);
     setInteracted(true);
