@@ -4,10 +4,9 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { SpinViewer } from "@/components/spin-viewer";
+import { Mannequin3D } from "@/components/mannequin/mannequin-3d";
 import { LinkButton } from "@/components/ui/button";
 import { showroomLooks, showroomNote } from "@/content/showroom";
-import { spinFrames } from "@/lib/spin";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -20,7 +19,7 @@ export function Showroom() {
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
       <figure className="lg:col-span-7">
-        <SpinViewer frames={spinFrames(look.id, look.frames)} alt={look.name} />
+        <Mannequin3D look={look.id} alt={look.name} preload={showroomLooks.map((l) => l.id).filter((id) => id !== look.id)} />
         <figcaption className="mt-3 font-sans text-[0.62rem] tracking-[0.2em] text-muted uppercase">
           Fig. {String(index + 1).padStart(2, "0")} — {look.name} · {showroomNote}
         </figcaption>

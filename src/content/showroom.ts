@@ -1,10 +1,9 @@
 /**
- * Looks in the 360° showroom. Frames live in /public/media/360/<id>/01.webp … 72.webp.
- * They are rendered previews; replace them with turntable photographs of the
- * house's own garments (same file names) whenever they're ready.
+ * Looks in the 360° showroom. Each is shown as a live 3D model; the image
+ * sequence in /public/media/360/<id>/ is the poster, thumbnail and fallback.
  */
 export type ShowroomLook = {
-  id: string;
+  id: "navy" | "charcoal" | "tuxedo";
   frames: number;
   name: string;
   tagline: string;
@@ -71,4 +70,4 @@ export const showroomLooks: ShowroomLook[] = [
 ];
 
 export const showroomNote =
-  "Rendered previews. Photography of the house's own garments is on its way — every look can be cut in any cloth from our library.";
+  "Live 3D preview. Every look can be cut in any cloth from our library.";

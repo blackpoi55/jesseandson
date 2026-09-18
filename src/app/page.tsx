@@ -7,8 +7,7 @@ import { ReasonsScroller } from "@/components/home/reasons-scroller";
 import { CountUp, ParallaxImage } from "@/components/motion/effects";
 import { MaskReveal, Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { PostCard } from "@/components/post-card";
-import { SpinViewer } from "@/components/spin-viewer";
-import { spinFrames } from "@/lib/spin";
+import { Mannequin3D } from "@/components/mannequin/mannequin-3d";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
 import { LinkButton, TextLink } from "@/components/ui/button";
 import { ImageCard } from "@/components/ui/image-card";
@@ -156,9 +155,9 @@ export default function HomePage() {
             </Reveal>
           </div>
           <Reveal className="lg:col-span-6 lg:col-start-7">
-            <SpinViewer frames={spinFrames("navy")} alt="The Navy Two-Piece on a tailor's dress form" compact />
+            <Mannequin3D look="navy" alt="The Navy Two-Piece on a tailor's dress form" compact />
             <p className="mt-2 font-sans text-[0.62rem] tracking-[0.2em] text-muted uppercase">
-              Fig. — The Navy Two-Piece · rendered preview
+              Fig. — The Navy Two-Piece · live 3D preview
             </p>
           </Reveal>
         </div>
