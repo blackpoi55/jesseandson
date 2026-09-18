@@ -24,6 +24,9 @@ function isActive(pathname: string, item: NavItem) {
  * Magazine masthead: a tall title row that scrolls away, and a ruled
  * section-navigation row that sticks to the top (desktop). On smaller
  * screens the masthead row itself sticks.
+ *
+ * On the home page the full-screen opener carries its own navigation, so
+ * the header stays out of the way until the visitor scrolls past it.
  */
 export function Header() {
   const pathname = usePathname();
@@ -32,11 +35,14 @@ export function Header() {
   const [hidden, setHidden] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const home = pathname === "/";
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
     setStuck(y > 120);
     setHidden(y > 600 && y > prev && !menu);
+    setPastHero(y > window.innerHeight - 100);
   });
 
   // Close menus on navigation (adjust state during render, not in an effect)
@@ -45,23 +51,36 @@ export function Header() {
     setLastPath(pathname);
     setMenu(null);
     setMobileOpen(false);
+    setPastHero(false);
   }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenu(null);
+    // the home opener's menu button
+    const onOpenMenu = () => setMobileOpen(true);
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    window.addEventListener("jesse:open-menu", onOpenMenu);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("jesse:open-menu", onOpenMenu);
+    };
   }, []);
 
   const active = mainNav.find((i) => i.label === menu);
+  const hide = hidden || (home && !pastHero);
+  const compact = stuck || home;
   const navItems = mainNav.filter((i) => i.href !== "/");
 
   return (
     <>
       {/* Masthead row — sticky on mobile, scrolls away on desktop */}
       <motion.div
-        className="sticky top-0 z-50 border-b border-line bg-bg xl:static"
-        animate={{ y: hidden ? "-100%" : "0%" }}
+        className={cn(
+          "top-0 z-50 border-b border-line bg-bg",
+          home ? "fixed inset-x-0 xl:hidden" : "sticky xl:static",
+        )}
+        initial={false}
+        animate={{ y: hide ? "-100%" : "0%" }}
         transition={{ duration: 0.45, ease: EASE }}
       >
         <div className="container-x grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-4 xl:h-[108px]">
@@ -107,18 +126,19 @@ export function Header() {
 
       {/* Section navigation — sticky on desktop */}
       <motion.header
-        className="sticky top-0 z-50 hidden xl:block"
-        animate={{ y: hidden ? "-100%" : "0%" }}
+        className={cn("top-0 z-50 hidden xl:block", home ? "fixed inset-x-0" : "sticky")}
+        initial={false}
+        animate={{ y: hide ? "-100%" : "0%" }}
         transition={{ duration: 0.45, ease: EASE }}
         onMouseLeave={() => setMenu(null)}
       >
-        <div className={cn("relative border-b transition-colors duration-300", stuck ? "glass border-line" : "border-line bg-bg")}>
+        <div className={cn("relative border-b transition-colors duration-300", compact ? "glass border-line" : "border-line bg-bg")}>
           <div className="container-x flex h-12 items-center justify-between gap-6">
             <Link
               href="/"
               aria-label="Jesse & Son — home"
-              tabIndex={stuck ? 0 : -1}
-              className={cn("w-40 transition-all duration-500", stuck ? "opacity-100" : "pointer-events-none -translate-y-1 opacity-0")}
+              tabIndex={compact ? 0 : -1}
+              className={cn("w-40 transition-all duration-500", compact ? "opacity-100" : "pointer-events-none -translate-y-1 opacity-0")}
             >
               <Wordmark compact />
             </Link>
@@ -155,10 +175,10 @@ export function Header() {
 
             <Link
               href="/contact#appointment"
-              tabIndex={stuck ? 0 : -1}
+              tabIndex={compact ? 0 : -1}
               className={cn(
                 "w-40 text-right font-sans text-[0.66rem] font-medium tracking-[0.2em] text-accent uppercase transition-all duration-500 hover:underline",
-                stuck ? "opacity-100" : "pointer-events-none opacity-0",
+                compact ? "opacity-100" : "pointer-events-none opacity-0",
               )}
             >
               Book a fitting →

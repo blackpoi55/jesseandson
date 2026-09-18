@@ -1,26 +1,40 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DiamondIcon, FabricIcon, JacketIcon, ScissorsIcon } from "@/components/brand/icons";
 import { MonogramSeal } from "@/components/brand/monogram";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { Magnetic } from "@/components/motion/effects";
 import { LinkButton } from "@/components/ui/button";
 import { VideoButton } from "@/components/ui/video-modal";
+import { mainNav } from "@/lib/nav";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { heroFonts } from "./hero-fonts";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const DURATION = 6000;
+const DURATION = 6500;
+const GOLD = "var(--lux-gold)";
 
+// position: which part of the landscape photo to keep when the screen is portrait
 const slides = [
-  { src: "/media/d4da7-bangkok-bespoke-tailoring.webp", caption: "Hand-finished in Bangkok", position: "68% center" },
-  { src: "/media/2e354-image1.webp", caption: "The fitting", position: "62% center" },
+  { src: "/media/094d8-how-to-choose-the-right-fabric-for-a-bespoke-suit-in-bangkok-a-tailor-s-perspective.webp", caption: "Cut by hand", position: "62% center" },
+  { src: "/media/00d6b-1633604378074.webp", caption: "The fitting", position: "35% center" },
   { src: "/media/1bbe4-ee9f1-1633604348404.webp", caption: "The fabric library", position: "center 40%" },
-  { src: "/media/e49f4-image12.webp", caption: "Ready for collection", position: "center" },
+  { src: "/media/785bf-custom-tailoring-for-tall-slim-builds-in-bangkok.webp", caption: "Chalk, tape and a second fitting", position: "45% center" },
   { src: "/media/a4e69-1633604348465.webp", caption: "The signature bar", position: "center" },
+];
+
+const features = [
+  { Icon: ScissorsIcon, label: ["Premium", "Craftsmanship"] },
+  { Icon: FabricIcon, label: ["Finest", "Fabrics"] },
+  { Icon: JacketIcon, label: ["Perfect Fit", "For You"] },
+  { Icon: DiamondIcon, label: ["Timeless", "Style"] },
 ];
 
 const contents = [
@@ -32,17 +46,132 @@ const contents = [
   { no: "06", title: "Notes from the Cutting Table", sub: "The journal", href: "/blog" },
 ];
 
-const features = [
-  { Icon: ScissorsIcon, label: "Premium craftsmanship" },
-  { Icon: FabricIcon, label: "Finest fabrics" },
-  { Icon: JacketIcon, label: "Perfect fit for you" },
-  { Icon: DiamondIcon, label: "Timeless style" },
-];
+/** The shop's wordmark in black-and-champagne dress. */
+function LuxWordmark() {
+  return (
+    <span className="inline-flex flex-col items-center leading-none">
+      <span className="font-lux-display text-[1.35rem] font-medium tracking-[0.04em]">
+        J<span className="text-[0.82em]">ESSE</span>
+        <span className="font-lux-serif mx-[0.28em] text-[0.95em] italic" style={{ color: GOLD }}>
+          &amp;
+        </span>
+        S<span className="text-[0.82em]">ON</span>
+      </span>
+      <span className="mt-1.5 flex w-full items-center gap-2">
+        <span className="h-px flex-1 bg-[color:var(--lux-gold)]/50" />
+        <span className="text-[0.5rem] font-medium tracking-[0.45em] uppercase" style={{ color: GOLD }}>
+          Bespoke Tailor
+        </span>
+        <span className="h-px flex-1 bg-[color:var(--lux-gold)]/50" />
+      </span>
+    </span>
+  );
+}
 
-/** Home page "cover": masthead headline, lead photograph and an "In this issue" index. */
+/**
+ * Navigation laid over the photographs. The site header takes over (solid, white) once the
+ * visitor scrolls past the opener.
+ */
+function HeroNav() {
+  const pathname = usePathname();
+  const [menu, setMenu] = useState<string | null>(null);
+
+  return (
+    <div className="absolute inset-x-0 top-0 z-30 border-b border-[color:var(--lux-fg)]/10" onMouseLeave={() => setMenu(null)}>
+      <div className="container-x flex h-[76px] items-center justify-between gap-6 lg:h-[88px]">
+        <Link href="/" aria-label="Jesse & Son — home" className="shrink-0">
+          <LuxWordmark />
+        </Link>
+
+        <nav aria-label="Main" className="hidden xl:block">
+          <ul className="flex items-center gap-4 2xl:gap-7">
+            {mainNav.map((item) => {
+              const on = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              return (
+                <li key={item.label} className="relative" onMouseEnter={() => setMenu(item.children ? item.label : null)}>
+                  <Link
+                    href={item.href}
+                    aria-current={on ? "page" : undefined}
+                    onFocus={() => setMenu(item.children ? item.label : null)}
+                    className={cn(
+                      "group relative flex items-center gap-1 py-3 text-[0.66rem] font-medium tracking-[0.16em] whitespace-nowrap uppercase transition-colors duration-300",
+                      on ? "text-[color:var(--lux-gold)]" : "hover:text-[color:var(--lux-gold)]",
+                    )}
+                  >
+                    {item.label}
+                    {item.children && (
+                      <ChevronDown
+                        className={cn("size-3 transition-transform duration-300", menu === item.label && "rotate-180")}
+                        strokeWidth={1.5}
+                      />
+                    )}
+                    <span
+                      className={cn(
+                        "absolute right-0 bottom-1 left-0 h-px origin-left bg-[color:var(--lux-gold)] transition-transform duration-500 ease-[var(--ease-luxe)]",
+                        on ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+                      )}
+                    />
+                  </Link>
+                  <AnimatePresence>
+                    {item.children && menu === item.label && (
+                      <motion.ul
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.3, ease: EASE }}
+                        className="absolute top-full left-1/2 w-64 -translate-x-1/2 border border-[color:var(--lux-fg)]/10 bg-[color:var(--lux-panel)] py-3 backdrop-blur-md"
+                      >
+                        {item.children.map((c) => (
+                          <li key={c.href}>
+                            <Link href={c.href} className="block px-5 py-2.5 transition-colors hover:bg-[color:var(--lux-fg)]/5">
+                              <span className="font-lux-serif block text-[1.15rem] italic">{c.label}</span>
+                              {c.description && <span className="block text-[0.78rem] text-[color:var(--lux-fg)]/55">{c.description}</span>}
+                            </Link>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <ThemeToggle className="size-11 rounded-full border-[color:var(--lux-fg)]/30! hover:border-[color:var(--lux-gold)]!" />
+          <Link
+            href="/contact#appointment"
+            className="group font-lux-serif hidden h-11 items-center gap-2.5 rounded-full border border-[color:var(--lux-gold)]/70 pr-5 pl-4 text-[1.08rem] whitespace-nowrap italic transition-all duration-500 hover:border-[color:var(--lux-gold)] hover:bg-[color:var(--lux-gold)] hover:text-[color:var(--lux-on-gold)] sm:inline-flex"
+          >
+            <PenLine className="size-4 text-[color:var(--lux-gold)] transition-colors group-hover:text-[color:var(--lux-on-gold)]" strokeWidth={1.4} />
+            Design Your Own
+          </Link>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("jesse:open-menu"))}
+            aria-label="Open menu"
+            className="flex size-11 flex-col items-center justify-center gap-[6px] rounded-full border border-[color:var(--lux-fg)]/25 xl:hidden"
+          >
+            <span className="h-px w-5 bg-current" />
+            <span className="h-px w-3.5 translate-x-[3px] bg-current" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Home page opener: full-screen photographs of the shop, then the "cover" with the editor's letter and contents. */
 export function HomeHero() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+
   const go = useCallback((step: number) => setIndex((i) => (i + step + slides.length) % slides.length), []);
 
   useEffect(() => {
@@ -51,186 +180,289 @@ export function HomeHero() {
     return () => clearTimeout(t);
   }, [index, paused, go]);
 
-  const words = ["Crafted", "for", "your", "story."];
-
   return (
-    <section className="border-b border-line">
-      <div className="container-x">
-        {/* Issue line */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="flex items-center justify-between gap-4 border-b border-fg py-3 font-sans text-[0.62rem] tracking-[0.24em] uppercase"
-        >
-          <span>The Tailoring Issue</span>
-          <span className="hidden text-muted md:inline">Thirty years of bespoke — from Udonthani to Sukhumvit</span>
-          <span className="text-accent">Bangkok</span>
+    <>
+      <section
+        ref={ref}
+        className={cn(heroFonts, "lux grain relative isolate flex min-h-[100svh] overflow-hidden")}
+        aria-roledescription="carousel"
+        aria-label="Jesse & Son"
+      >
+        <HeroNav />
+
+        {/* Slides */}
+        <motion.div style={{ y: bgY }} className="absolute inset-0 -z-20">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={index}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.6, ease: "easeInOut" }}
+            >
+              <div className="absolute inset-0" style={{ animation: `kenburns ${DURATION + 2000}ms ease-out forwards` }}>
+                <Image
+                  src={slides[index].src}
+                  alt=""
+                  fill
+                  preload={index === 0}
+                  sizes="100vw"
+                  quality={85}
+                  className="object-cover"
+                  style={{ objectPosition: slides[index].position }}
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
+        <div className="lux-veil-x absolute inset-0 -z-10" />
+        <div className="lux-veil-y absolute inset-0 -z-10" />
 
-        {/* Cover headline */}
-        <h1 className="pt-8 pb-6 font-serif leading-[0.9] font-normal tracking-[-0.025em] text-[clamp(3.3rem,10.5vw,10.5rem)] md:pt-10">
-          <span className="sr-only">Jesse &amp; Son — crafted for your story</span>
-          <span aria-hidden className="flex flex-wrap gap-x-[0.22em]">
-            {words.map((w, i) => (
-              <span key={w} className="inline-block overflow-hidden pb-[0.06em]">
-                <motion.span
-                  className={cn("inline-block", w === "your" && "text-accent italic")}
-                  initial={{ y: "105%" }}
-                  animate={{ y: "0%" }}
-                  transition={{ duration: 1.1, delay: 0.15 + i * 0.09, ease: EASE }}
-                >
-                  {w}
-                </motion.span>
-              </span>
-            ))}
-          </span>
-        </h1>
+        {/* Seal + script flourish */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, rotate: -30 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1.6, delay: 0.8, ease: EASE }}
+          className="absolute top-32 right-6 hidden md:block lg:right-16"
+        >
+          <MonogramSeal className="size-32 text-[color:var(--lux-fg)]/80! lg:size-40" />
+        </motion.div>
+        <motion.p
+          aria-hidden
+          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
+          animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
+          transition={{ duration: 2, delay: 1.4, ease: [0.65, 0, 0.35, 1] }}
+          className="font-lux-script absolute top-[44%] right-6 hidden -rotate-6 text-6xl leading-[0.8] lg:right-28 lg:block xl:text-7xl"
+          style={{ color: GOLD }}
+        >
+          Made
+          <br />
+          <span className="pl-14">to Measure</span>
+        </motion.p>
 
-        <div className="grid gap-10 border-t border-line pt-8 pb-12 lg:grid-cols-12 lg:gap-8">
-          {/* Standfirst */}
+        <motion.div
+          style={{ y: contentY, opacity: contentOpacity }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          className="container-x flex w-full flex-col justify-center pt-32 pb-44 md:pb-40"
+        >
+          <motion.p
+            initial={{ opacity: 0, letterSpacing: "0.2em" }}
+            animate={{ opacity: 1, letterSpacing: "0.62em" }}
+            transition={{ duration: 1.6, delay: 0.3, ease: EASE }}
+            className="font-sans text-[0.72rem] font-medium uppercase md:text-sm"
+            style={{ color: GOLD }}
+          >
+            Bespoke Tailor · Bangkok
+          </motion.p>
+
+          <h1 className="font-lux-display mt-5 text-[3.4rem] leading-[0.95] font-normal sm:text-7xl md:text-8xl lg:text-[8.5rem]">
+            <span className="sr-only">Jesse &amp; Son — crafted for your story</span>
+            <span aria-hidden className="flex flex-wrap items-baseline">
+              {["J", "esse", "&", "S", "on"].map((part, i) => (
+                <span key={i} className="inline-block overflow-hidden pb-[0.08em]">
+                  <motion.span
+                    className={cn(
+                      "inline-block",
+                      part === "&" && "font-lux-serif mx-[0.18em] italic",
+                      (part === "esse" || part === "on") && "text-[0.84em]",
+                    )}
+                    style={part === "&" ? { color: GOLD } : undefined}
+                    initial={{ y: "110%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: 1.2, delay: 0.5 + i * 0.08, ease: EASE }}
+                  >
+                    {part.toUpperCase()}
+                  </motion.span>
+                </span>
+              ))}
+            </span>
+          </h1>
+          <motion.p
+            aria-hidden
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 1, ease: EASE }}
+            className="font-lux-serif mt-2 text-3xl md:ml-[0.4em] md:text-5xl"
+          >
+            Crafted for <em className="text-gold-gradient pr-1">Your Story</em>
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.2, ease: EASE }}
+            className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-[color:var(--lux-fg)]/75 md:ml-[0.6em] md:text-xl"
+          >
+            Premium bespoke tailoring on Sukhumvit Soi 10 — over 30 years of craftsmanship, timeless design and a
+            perfect fit for every occasion.
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6, ease: EASE }}
-            className="order-2 lg:order-1 lg:col-span-3"
+            transition={{ duration: 1, delay: 1.4, ease: EASE }}
+            className="mt-10 flex flex-wrap items-center gap-4 md:ml-[0.6em]"
           >
-            <p className="eyebrow text-accent">Editor&apos;s letter</p>
-            <p className="drop-cap mt-5 text-[1.12rem] leading-relaxed">
-              For three decades, Jesse and his sons have cut suits, shirts and coats by hand on Sukhumvit Soi 10 —
-              one pattern per client, drafted from more than twenty measurements, finished with horn buttons and
-              Bemberg linings.
-            </p>
-            <div className="mt-8 flex flex-col gap-3">
-              <LinkButton href="/contact#appointment">Book a fitting</LinkButton>
-              <VideoButton youtubeId={site.social.youtubeId} label="Watch our workshop" />
-            </div>
+            <Magnetic>
+              <Link
+                href="/contact#appointment"
+                className="btn-gold group/btn font-lux-serif inline-flex h-14 items-center gap-3 rounded-[3px] px-10 text-[1.3rem] whitespace-nowrap italic transition-all duration-500"
+              >
+                Design Your Own
+                <ArrowRight className="size-4 transition-transform duration-500 group-hover/btn:translate-x-1" strokeWidth={1.5} />
+              </Link>
+            </Magnetic>
+            <VideoButton youtubeId={site.social.youtubeId} label="Our Workshop" tone="lux" />
           </motion.div>
 
-          {/* Lead photograph */}
-          <div
-            className="order-1 lg:order-2 lg:col-span-6"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-            aria-roledescription="carousel"
-          >
-            <motion.div
-              initial={{ clipPath: "inset(0 0 100% 0)" }}
-              animate={{ clipPath: "inset(0 0 0% 0)" }}
-              transition={{ duration: 1.4, delay: 0.3, ease: EASE }}
-              className="relative aspect-[4/5] overflow-hidden bg-bg-alt sm:aspect-[5/4] lg:aspect-[4/5]"
-            >
-              <AnimatePresence initial={false}>
-                <motion.div
-                  key={index}
-                  className="absolute inset-0"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1.2, ease: "easeInOut" }}
-                >
-                  <div className="absolute inset-0" style={{ animation: `kenburns ${DURATION + 1500}ms ease-out forwards` }}>
-                    <Image
-                      src={slides[index].src}
-                      alt={slides[index].caption}
-                      fill
-                      priority={index === 0}
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="object-cover"
-                      style={{ objectPosition: slides[index].position }}
-                    />
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-              <MonogramSeal className="absolute top-5 right-5 size-24 text-white/90 md:size-28" />
-            </motion.div>
-            <div className="mt-3 flex items-center justify-between gap-4">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={index}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  className="font-sans text-[0.62rem] tracking-[0.22em] text-muted uppercase"
-                >
-                  Fig. {String(index + 1).padStart(2, "0")} — {slides[index].caption}
-                </motion.p>
-              </AnimatePresence>
-              <div className="flex items-center gap-3">
-                <button onClick={() => go(-1)} aria-label="Previous photograph" className="p-1 transition hover:text-accent">
-                  <ArrowLeft className="size-4" strokeWidth={1.5} />
-                </button>
-                <span className="font-sans text-[0.62rem] tracking-[0.2em] tabular-nums">
-                  {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-                </span>
-                <button onClick={() => go(1)} aria-label="Next photograph" className="p-1 transition hover:text-accent">
-                  <ArrowRight className="size-4" strokeWidth={1.5} />
-                </button>
-              </div>
-            </div>
-            <div className="mt-2 h-px w-full bg-line">
-              <motion.div
-                key={`${index}-${paused}`}
-                className="h-px bg-fg"
-                initial={{ width: "0%" }}
-                animate={{ width: paused ? "0%" : "100%" }}
-                transition={{ duration: paused ? 0.2 : DURATION / 1000, ease: "linear" }}
-              />
-            </div>
-          </div>
-
-          {/* In this issue */}
-          <motion.nav
-            aria-label="In this issue"
+          <motion.ul
             initial="hidden"
             animate="show"
-            variants={{ show: { transition: { staggerChildren: 0.08, delayChildren: 0.7 } } }}
-            className="order-3 lg:col-span-3"
+            variants={{ show: { transition: { staggerChildren: 0.1, delayChildren: 1.7 } } }}
+            className="mt-14 hidden max-w-3xl grid-cols-4 md:ml-[0.6em] md:grid"
           >
-            <p className="eyebrow">In this issue</p>
-            <ol className="mt-4 border-t border-fg">
-              {contents.map((c) => (
-                <motion.li
-                  key={c.no}
-                  variants={{ hidden: { opacity: 0, x: 16 }, show: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } } }}
-                  className="border-b border-line"
-                >
-                  <Link href={c.href} className="group grid grid-cols-[2.2rem_1fr] gap-2 py-4">
-                    <span className="font-serif text-lg text-accent">{c.no}</span>
-                    <span>
-                      <span className="block font-serif text-[1.35rem] leading-tight transition-all group-hover:italic">{c.title}</span>
-                      <span className="mt-1 block text-[0.92rem] text-muted">{c.sub}</span>
-                    </span>
-                  </Link>
-                </motion.li>
-              ))}
-            </ol>
-          </motion.nav>
-        </div>
-      </div>
+            {features.map(({ Icon, label }, i) => (
+              <motion.li
+                key={label.join()}
+                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}
+                className={cn("flex items-center gap-4 pr-4", i > 0 && "border-l border-[color:var(--lux-fg)]/15 pl-6")}
+              >
+                <Icon className="size-10 shrink-0" style={{ color: GOLD }} />
+                <span className="font-sans text-[0.85rem] leading-snug text-[color:var(--lux-fg)]/80">
+                  {label[0]}
+                  <br />
+                  {label[1]}
+                </span>
+              </motion.li>
+            ))}
+          </motion.ul>
+        </motion.div>
 
-      {/* Feature strip */}
-      <motion.ul
-        initial="hidden"
-        animate="show"
-        variants={{ show: { transition: { staggerChildren: 0.08, delayChildren: 1 } } }}
-        className="container-x grid grid-cols-2 border-t border-line md:grid-cols-4"
-      >
-        {features.map(({ Icon, label }, i) => (
-          <motion.li
-            key={label}
-            variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } } }}
-            className={cn(
-              "flex items-center gap-4 py-6",
-              i % 2 === 1 && "border-l border-line pl-5 md:pl-8",
-              i === 2 && "md:border-l md:pl-8",
-            )}
-          >
-            <Icon className="size-9 shrink-0 text-accent" />
-            <span className="font-sans text-[0.66rem] tracking-[0.22em] uppercase">{label}</span>
-          </motion.li>
-        ))}
-      </motion.ul>
-    </section>
+        {/* Slider controls (kept clear of the floating contact button) */}
+        <div className="absolute right-0 bottom-24 left-0 md:bottom-10">
+          <div className="container-x flex items-center justify-center gap-6 sm:justify-between md:justify-end md:pr-24">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={index}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                className="font-lux-serif hidden text-lg text-[color:var(--lux-fg)]/70 italic sm:block md:mr-6"
+              >
+                {slides[index].caption}
+              </motion.p>
+            </AnimatePresence>
+            <div className="flex items-center gap-3 md:gap-5">
+              <button
+                onClick={() => go(-1)}
+                aria-label="Previous slide"
+                className="flex size-11 items-center justify-center rounded-full border border-[color:var(--lux-fg)]/40 transition hover:border-[color:var(--lux-gold)] hover:text-[color:var(--lux-gold)] md:size-12"
+              >
+                <ChevronLeft className="size-4" strokeWidth={1.5} />
+              </button>
+              <ol className="flex items-center gap-3 md:gap-4">
+                {slides.map((s, i) => (
+                  <li key={s.src}>
+                    <button
+                      onClick={() => setIndex(i)}
+                      aria-label={`Slide ${i + 1}: ${s.caption}`}
+                      aria-current={i === index}
+                      className={cn(
+                        "font-lux-display relative pb-2 text-xs tracking-[0.1em] transition-colors",
+                        i === index ? "text-[color:var(--lux-fg)]" : "text-[color:var(--lux-fg)]/45 hover:text-[color:var(--lux-fg)]/80",
+                      )}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                      <span className="absolute inset-x-0 bottom-0 h-px bg-[color:var(--lux-fg)]/20" />
+                      {i === index && (
+                        <motion.span
+                          key={`${index}-${paused}`}
+                          className="absolute bottom-0 left-0 h-px bg-[color:var(--lux-gold)]"
+                          initial={{ width: "0%" }}
+                          animate={{ width: "100%" }}
+                          transition={{ duration: paused ? 0.3 : DURATION / 1000, ease: "linear" }}
+                        />
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+              <button
+                onClick={() => go(1)}
+                aria-label="Next slide"
+                className="flex size-11 items-center justify-center rounded-full border border-[color:var(--lux-gold)] text-[color:var(--lux-gold)] transition hover:bg-[color:var(--lux-gold)] hover:text-[color:var(--lux-on-gold)] md:size-12"
+              >
+                <ChevronRight className="size-4" strokeWidth={1.5} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The cover: editor's letter and contents */}
+      <section className="border-b border-line">
+        <div className="container-x">
+          <div className="flex items-center justify-between gap-4 border-b border-fg py-3 font-sans text-[0.62rem] tracking-[0.24em] uppercase">
+            <span>The Tailoring Issue</span>
+            <span className="hidden text-muted md:inline">Thirty years of bespoke — from Udonthani to Sukhumvit</span>
+            <span className="text-accent">Bangkok</span>
+          </div>
+
+          <div className="grid gap-12 pt-10 pb-14 lg:grid-cols-12 lg:gap-10 lg:pt-14">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 1, ease: EASE }}
+              className="lg:col-span-5"
+            >
+              <p className="eyebrow text-accent">Editor&apos;s letter</p>
+              <p className="drop-cap mt-5 text-[1.15rem] leading-relaxed">
+                For three decades, Jesse and his sons have cut suits, shirts and coats by hand on Sukhumvit Soi 10 —
+                one pattern per client, drafted from more than twenty measurements, finished with horn buttons and
+                Bemberg linings.
+              </p>
+              <div className="mt-8">
+                <LinkButton href="/about" variant="outline">
+                  Our story
+                </LinkButton>
+              </div>
+            </motion.div>
+
+            <motion.nav
+              aria-label="In this issue"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={{ show: { transition: { staggerChildren: 0.07 } } }}
+              className="lg:col-span-7"
+            >
+              <p className="eyebrow">In this issue</p>
+              <ol className="mt-4 grid border-t border-fg sm:grid-cols-2 sm:gap-x-8">
+                {contents.map((c) => (
+                  <motion.li
+                    key={c.no}
+                    variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } } }}
+                    className="border-b border-line"
+                  >
+                    <Link href={c.href} className="group grid grid-cols-[2.2rem_1fr] gap-2 py-4">
+                      <span className="font-serif text-lg text-accent">{c.no}</span>
+                      <span>
+                        <span className="block font-serif text-[1.35rem] leading-tight transition-all group-hover:italic">
+                          {c.title}
+                        </span>
+                        <span className="mt-1 block text-[0.92rem] text-muted">{c.sub}</span>
+                      </span>
+                    </Link>
+                  </motion.li>
+                ))}
+              </ol>
+            </motion.nav>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

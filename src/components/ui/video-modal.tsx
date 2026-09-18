@@ -11,12 +11,16 @@ import { cn } from "@/lib/utils";
 export function VideoButton({
   youtubeId,
   label,
+  tone = "default",
   className,
 }: {
   youtubeId: string;
   label: string;
+  /** "lux" for the black-and-champagne home opener. */
+  tone?: "default" | "lux";
   className?: string;
 }) {
+  const lux = tone === "lux";
   const [open, setOpen] = useState(false);
   const mounted = useMounted();
 
@@ -37,13 +41,28 @@ export function VideoButton({
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          "group/video inline-flex h-12 items-center justify-center gap-3 border border-fg pr-6 pl-2 font-sans text-[0.7rem] font-medium tracking-[0.22em] text-fg uppercase transition-colors duration-300 hover:bg-fg hover:text-bg",
+          "group/video inline-flex items-center justify-center border transition-colors duration-300",
+          lux
+            ? "font-lux-serif h-14 gap-4 rounded-[3px] border-[color:var(--lux-fg)]/40 pr-7 pl-2 text-[1.3rem] text-[color:var(--lux-fg)] italic duration-500 hover:border-[color:var(--lux-gold)]"
+            : "h-12 gap-3 border-fg pr-6 pl-2 font-sans text-[0.7rem] font-medium tracking-[0.22em] text-fg uppercase hover:bg-fg hover:text-bg",
           className,
         )}
       >
-        <span className="relative flex size-8 items-center justify-center rounded-full border border-current">
-          <span className="absolute inset-0 animate-ping rounded-full border border-accent/50 [animation-duration:2.4s]" />
-          <Play className="ml-0.5 size-3 fill-current" strokeWidth={1} />
+        <span
+          className={cn(
+            "relative flex items-center justify-center rounded-full border",
+            lux
+              ? "size-10 border-[color:var(--lux-fg)]/60 transition-colors duration-500 group-hover/video:border-[color:var(--lux-gold)] group-hover/video:bg-[color:var(--lux-gold)] group-hover/video:text-[color:var(--lux-on-gold)]"
+              : "size-8 border-current",
+          )}
+        >
+          <span
+            className={cn(
+              "absolute inset-0 animate-ping rounded-full border [animation-duration:2.4s]",
+              lux ? "border-[color:var(--lux-gold)]/50" : "border-accent/50",
+            )}
+          />
+          <Play className={cn("ml-0.5 fill-current", lux ? "size-4" : "size-3")} strokeWidth={1} />
         </span>
         {label}
       </button>
