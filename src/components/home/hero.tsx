@@ -20,6 +20,8 @@ import { heroFonts } from "./hero-fonts";
 const EASE = [0.22, 1, 0.36, 1] as const;
 const DURATION = 6500;
 const GOLD = "var(--lux-gold)";
+/** Start time of a CSS entrance ("enter-*" in globals.css). */
+const delay = (s: number) => ({ "--d": `${s}s` }) as React.CSSProperties;
 
 // position: which part of the landscape photo to keep when the screen is portrait
 const slides = [
@@ -219,27 +221,21 @@ export function HomeHero() {
         <div className="lux-veil-x absolute inset-0 -z-10" />
         <div className="lux-veil-y absolute inset-0 -z-10" />
 
-        {/* Seal + script flourish */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: -30 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1.6, delay: 0.8, ease: EASE }}
-          className="absolute top-32 right-6 hidden md:block lg:right-16"
-        >
+        {/* Seal + script flourish. Entrances are CSS (globals.css "enter-*") so they play from the first paint. */}
+        <div className="enter-seal absolute top-32 right-6 hidden md:block lg:right-16" style={delay(0.8)}>
           <MonogramSeal className="size-32 text-[color:var(--lux-fg)]/80! lg:size-40" />
-        </motion.div>
-        <motion.p
+        </div>
+        <p
           aria-hidden
-          initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-          animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
-          transition={{ duration: 2, delay: 1.4, ease: [0.65, 0, 0.35, 1] }}
           className="font-lux-script absolute top-[44%] right-6 hidden -rotate-6 text-6xl leading-[0.8] lg:right-28 lg:block xl:text-7xl"
           style={{ color: GOLD }}
         >
-          Made
-          <br />
-          <span className="pl-14">to Measure</span>
-        </motion.p>
+          <span className="enter-wipe block" style={delay(1.4)}>
+            Made
+            <br />
+            <span className="pl-14">to Measure</span>
+          </span>
+        </p>
 
         <motion.div
           style={{ y: contentY, opacity: contentOpacity }}
@@ -247,64 +243,45 @@ export function HomeHero() {
           onMouseLeave={() => setPaused(false)}
           className="container-x flex w-full flex-col justify-center pt-32 pb-44 md:pb-40"
         >
-          <motion.p
-            initial={{ opacity: 0, letterSpacing: "0.2em" }}
-            animate={{ opacity: 1, letterSpacing: "0.62em" }}
-            transition={{ duration: 1.6, delay: 0.3, ease: EASE }}
-            className="font-sans text-[0.72rem] font-medium uppercase md:text-sm"
-            style={{ color: GOLD }}
+          <p
+            className="enter-track font-sans text-[0.72rem] font-medium tracking-[0.62em] uppercase md:text-sm"
+            style={{ color: GOLD, ...delay(0.3) }}
           >
             Bespoke Tailor · Bangkok
-          </motion.p>
+          </p>
 
           <h1 className="font-lux-display mt-5 text-[3.4rem] leading-[0.95] font-normal sm:text-7xl md:text-8xl lg:text-[8.5rem]">
             <span className="sr-only">Jesse &amp; Son — crafted for your story</span>
             <span aria-hidden className="flex flex-wrap items-baseline">
               {["J", "esse", "&", "S", "on"].map((part, i) => (
                 <span key={i} className="inline-block overflow-hidden pb-[0.08em]">
-                  <motion.span
+                  <span
                     className={cn(
-                      "inline-block",
+                      "enter-rise inline-block",
                       part === "&" && "font-lux-serif mx-[0.18em] italic",
                       (part === "esse" || part === "on") && "text-[0.84em]",
                     )}
-                    style={part === "&" ? { color: GOLD } : undefined}
-                    initial={{ y: "110%" }}
-                    animate={{ y: "0%" }}
-                    transition={{ duration: 1.2, delay: 0.5 + i * 0.08, ease: EASE }}
+                    style={{ ...(part === "&" ? { color: GOLD } : {}), ...delay(0.5 + i * 0.08) }}
                   >
                     {part.toUpperCase()}
-                  </motion.span>
+                  </span>
                 </span>
               ))}
             </span>
           </h1>
-          <motion.p
-            aria-hidden
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 1, ease: EASE }}
-            className="font-lux-serif mt-2 text-3xl md:ml-[0.4em] md:text-5xl"
-          >
+          <p aria-hidden className="enter-up font-lux-serif mt-2 text-3xl md:ml-[0.4em] md:text-5xl" style={delay(1)}>
             Crafted for <em className="text-gold-gradient pr-1">Your Story</em>
-          </motion.p>
+          </p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.2, ease: EASE }}
-            className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-[color:var(--lux-fg)]/75 md:ml-[0.6em] md:text-xl"
+          <p
+            className="enter-up mt-6 max-w-xl font-sans text-lg leading-relaxed text-[color:var(--lux-fg)]/75 md:ml-[0.6em] md:text-xl"
+            style={delay(1.2)}
           >
             Premium bespoke tailoring on Sukhumvit Soi 10 — over 30 years of craftsmanship, timeless design and a
             perfect fit for every occasion.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.4, ease: EASE }}
-            className="mt-10 flex flex-wrap items-center gap-4 md:ml-[0.6em]"
-          >
+          <div className="enter-up mt-10 flex flex-wrap items-center gap-4 md:ml-[0.6em]" style={delay(1.4)}>
             <Magnetic>
               <Link
                 href="/contact#appointment"
@@ -315,19 +292,14 @@ export function HomeHero() {
               </Link>
             </Magnetic>
             <VideoButton youtubeId={site.social.youtubeId} label="Our Workshop" tone="lux" />
-          </motion.div>
+          </div>
 
-          <motion.ul
-            initial="hidden"
-            animate="show"
-            variants={{ show: { transition: { staggerChildren: 0.1, delayChildren: 1.7 } } }}
-            className="mt-14 hidden max-w-3xl grid-cols-4 md:ml-[0.6em] md:grid"
-          >
+          <ul className="mt-14 hidden max-w-3xl grid-cols-4 md:ml-[0.6em] md:grid">
             {features.map(({ Icon, label }, i) => (
-              <motion.li
+              <li
                 key={label.join()}
-                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}
-                className={cn("flex items-center gap-4 pr-4", i > 0 && "border-l border-[color:var(--lux-fg)]/15 pl-6")}
+                className={cn("enter-up flex items-center gap-4 pr-4", i > 0 && "border-l border-[color:var(--lux-fg)]/15 pl-6")}
+                style={delay(1.7 + i * 0.1)}
               >
                 <Icon className="size-10 shrink-0" style={{ color: GOLD }} />
                 <span className="font-sans text-[0.85rem] leading-snug text-[color:var(--lux-fg)]/80">
@@ -335,9 +307,9 @@ export function HomeHero() {
                   <br />
                   {label[1]}
                 </span>
-              </motion.li>
+              </li>
             ))}
-          </motion.ul>
+          </ul>
         </motion.div>
 
         {/* Slider controls (kept clear of the floating contact button) */}

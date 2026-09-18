@@ -81,6 +81,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={fontVariables}>
       <body className="min-h-svh">
+        {/* Before first paint: play the intro (Preloader) once per session, skip it on reloads */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var s=sessionStorage,k="js-intro-seen";if(s.getItem(k)==="1"||matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("intro-seen");else s.setItem(k,"1")}catch(e){}`,
+          }}
+        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Providers>
           <a
