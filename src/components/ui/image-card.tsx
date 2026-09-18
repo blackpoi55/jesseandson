@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowCircle } from "@/components/ui/button";
+import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Dark photographic card with title, subtitle and a round arrow — hovering zooms the photo. */
+/** Editorial feature card: photograph, then folio, headline and standfirst beneath it. */
 export function ImageCard({
   href,
   image,
@@ -11,6 +11,7 @@ export function ImageCard({
   subtitle,
   eyebrow,
   className,
+  aspect = "aspect-[4/5]",
   sizes = "(min-width: 1024px) 33vw, 100vw",
   priority,
 }: {
@@ -20,35 +21,34 @@ export function ImageCard({
   subtitle?: string;
   eyebrow?: string;
   className?: string;
+  aspect?: string;
   sizes?: string;
   priority?: boolean;
 }) {
   return (
-    <Link
-      href={href}
-      data-cursor="view"
-      className={cn(
-        "group relative isolate flex overflow-hidden rounded-[4px] border border-ivory/10 bg-ink text-ivory",
-        className,
-      )}
-    >
-      <Image
-        src={image}
-        alt=""
-        fill
-        sizes={sizes}
-        priority={priority}
-        className="-z-10 object-cover transition-transform duration-[1.6s] ease-[var(--ease-luxe)] group-hover:scale-[1.08]"
-      />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/35 to-black/5 transition-opacity duration-700 group-hover:from-black/80" />
-      <div className="absolute inset-3 -z-10 border border-ivory/0 transition-colors duration-700 group-hover:border-champagne/40" />
-      <div className="mt-auto flex w-full items-end justify-between gap-6 p-7 md:p-9">
+    <Link href={href} className={cn("group block", className)}>
+      <div className={cn("relative overflow-hidden bg-bg-alt", aspect)} data-cursor="view">
+        <Image
+          src={image}
+          alt=""
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-cover transition-transform duration-[1.6s] ease-[var(--ease-luxe)] group-hover:scale-[1.05]"
+        />
+      </div>
+      <div className="mt-4 flex items-start justify-between gap-4 border-t border-fg pt-3">
         <div>
-          {eyebrow && <p className="eyebrow mb-3 text-champagne">{eyebrow}</p>}
-          <h3 className="font-serif text-3xl leading-tight md:text-[2.4rem]">{title}</h3>
-          {subtitle && <p className="mt-2 font-serif text-lg text-ivory/75 italic">{subtitle}</p>}
+          {eyebrow && <p className="font-sans text-[0.62rem] tracking-[0.24em] text-accent uppercase">{eyebrow}</p>}
+          <h3 className="mt-1 font-serif text-[1.9rem] leading-tight transition-all duration-300 group-hover:italic md:text-[2.2rem]">
+            {title}
+          </h3>
+          {subtitle && <p className="mt-1 text-[1rem] text-muted">{subtitle}</p>}
         </div>
-        <ArrowCircle className="shrink-0 border-ivory/60 group-hover:border-champagne group-hover:bg-champagne group-hover:text-ink" />
+        <ArrowUpRight
+          className="mt-2 size-5 shrink-0 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+          strokeWidth={1.3}
+        />
       </div>
     </Link>
   );

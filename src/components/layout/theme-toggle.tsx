@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 export function ThemeToggle({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useMounted();
-  const dark = !mounted || resolvedTheme === "dark";
+  const dark = mounted && resolvedTheme === "dark";
 
   return (
     <button
@@ -18,7 +18,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       title={dark ? "Light mode" : "Dark mode"}
       className={cn(
-        "relative flex size-10 items-center justify-center overflow-hidden rounded-full border border-current/25 transition-colors duration-300 hover:border-gold hover:text-gold",
+        "relative flex size-10 items-center justify-center overflow-hidden border border-line transition-colors duration-300 hover:border-fg",
         className,
       )}
     >

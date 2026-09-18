@@ -11,8 +11,8 @@ const channels = [
   { label: "LINE", href: site.line.url, Icon: LineIcon, color: "#06C755" },
   { label: "WhatsApp", href: site.whatsapp, Icon: WhatsAppIcon, color: "#25D366" },
   { label: "Instagram", href: site.social.instagram, Icon: InstagramIcon, color: "#E1306C" },
-  { label: "Call", href: `tel:${site.phone}`, Icon: Phone, color: "#d6b47c" },
-  { label: "Email", href: `mailto:${site.email}`, Icon: Mail, color: "#d6b47c" },
+  { label: "Call", href: `tel:${site.phone}`, Icon: Phone, color: "#121212" },
+  { label: "Email", href: `mailto:${site.email}`, Icon: Mail, color: "#121212" },
 ];
 
 /** Bottom-right concierge button that fans out messaging channels, plus back-to-top. */
@@ -47,7 +47,7 @@ export function FloatingContact() {
                   rel="noopener noreferrer"
                   className="group flex items-center gap-3"
                 >
-                  <span className="rounded-full bg-ink/90 px-3 py-1.5 text-xs tracking-wide text-ivory shadow-lg backdrop-blur">
+                  <span className="bg-fg px-3 py-1.5 font-sans text-[0.62rem] tracking-[0.2em] text-bg uppercase">
                     {label}
                   </span>
                   <span
@@ -73,7 +73,7 @@ export function FloatingContact() {
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.6 }}
-              className="glass flex size-12 items-center justify-center rounded-full border border-line text-fg shadow-lg transition hover:border-gold hover:text-gold"
+              className="glass flex size-12 items-center justify-center rounded-full border border-line text-fg shadow-lg transition hover:border-accent hover:text-accent"
             >
               <ArrowUp className="size-4" strokeWidth={1.5} />
             </motion.button>
@@ -85,9 +85,9 @@ export function FloatingContact() {
           aria-label={open ? "Close contact options" : "Message us"}
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
-          className={cn("btn-gold relative flex size-14 items-center justify-center rounded-full shadow-xl")}
+          className={cn("btn-primary relative flex size-14 items-center justify-center rounded-full")}
         >
-          {!open && <span className="absolute inset-0 animate-ping rounded-full bg-champagne/40 [animation-duration:3s]" />}
+          {!open && <span className="absolute inset-0 animate-ping rounded-full bg-accent/30 [animation-duration:3s]" />}
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
               key={open ? "x" : "chat"}

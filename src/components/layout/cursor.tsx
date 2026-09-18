@@ -54,7 +54,7 @@ export function CustomCursor() {
           width: size,
           height: size,
           opacity: visible ? 1 : 0,
-          backgroundColor: mode === "view" ? "rgba(214,180,124,1)" : "rgba(214,180,124,0)",
+          backgroundColor: mode === "view" ? "rgba(255,255,255,1)" : "rgba(255,255,255,0)",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 28 }}
       >
@@ -64,7 +64,7 @@ export function CustomCursor() {
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.6 }}
-              className="font-serif text-base text-ink italic"
+              className="font-sans text-[0.6rem] tracking-[0.2em] text-ink uppercase"
             >
               View
             </motion.span>
@@ -73,7 +73,7 @@ export function CustomCursor() {
       </motion.div>
       <motion.div
         aria-hidden
-        className="pointer-events-none fixed top-0 left-0 z-[100] size-1.5 rounded-full bg-champagne"
+        className="pointer-events-none fixed top-0 left-0 z-[100] size-1.5 rounded-full bg-white mix-blend-difference"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
         animate={{ opacity: visible && mode !== "view" ? 1 : 0 }}
       />

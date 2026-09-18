@@ -16,7 +16,7 @@ export function StepTabs({ steps, imageFit = "cover" }: { steps: Step[]; imageFi
 
   return (
     <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-bg-alt">
+      <div className="relative aspect-[4/3] overflow-hidden bg-bg-alt">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={step.image}
@@ -35,7 +35,7 @@ export function StepTabs({ steps, imageFit = "cover" }: { steps: Step[]; imageFi
             />
           </motion.div>
         </AnimatePresence>
-        <span className="absolute bottom-5 left-5 rounded-full bg-black/60 px-4 py-1.5 font-display text-xs tracking-[0.2em] text-champagne backdrop-blur">
+        <span className="absolute bottom-5 left-5 bg-white px-3 py-1.5 font-sans text-[0.6rem] tracking-[0.2em] text-ink uppercase">
           Step {String(active + 1).padStart(2, "0")}
         </span>
       </div>
@@ -49,8 +49,8 @@ export function StepTabs({ steps, imageFit = "cover" }: { steps: Step[]; imageFi
                 aria-selected={i === active}
                 onClick={() => setActive(i)}
                 className={cn(
-                  "group flex items-center gap-2.5 rounded-full border px-4 py-2 text-[0.72rem] tracking-[0.18em] uppercase transition-all duration-300",
-                  i === active ? "border-gold bg-gold text-ink" : "border-line text-muted hover:border-gold/60 hover:text-fg",
+                  "group flex items-center gap-2.5 border px-4 py-2 text-[0.66rem] tracking-[0.18em] uppercase transition-all duration-300",
+                  i === active ? "border-fg bg-fg text-bg" : "border-line text-muted hover:border-fg hover:text-fg",
                 )}
               >
                 <span className="font-display">{String(i + 1).padStart(2, "0")}</span>
@@ -70,9 +70,9 @@ export function StepTabs({ steps, imageFit = "cover" }: { steps: Step[]; imageFi
             transition={{ duration: 0.5, ease: EASE }}
             className="mt-10"
           >
-            <span className="font-display text-7xl text-gold/25">{String(active + 1).padStart(2, "0")}</span>
+            <span className="font-display text-7xl text-accent/25">{String(active + 1).padStart(2, "0")}</span>
             <h3 className="-mt-3 font-serif text-5xl">{step.title}</h3>
-            {step.subtitle && <p className="mt-2 font-serif text-xl text-gold italic">{step.subtitle}</p>}
+            {step.subtitle && <p className="mt-2 font-serif text-xl text-accent italic">{step.subtitle}</p>}
             <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted">
               {step.body.map((p) => (
                 <p key={p}>{p}</p>
@@ -80,7 +80,7 @@ export function StepTabs({ steps, imageFit = "cover" }: { steps: Step[]; imageFi
             </div>
             <div className="mt-8 flex gap-2">
               {steps.map((_, i) => (
-                <span key={i} className={cn("h-0.5 flex-1 rounded-full transition-colors duration-500", i <= active ? "bg-gold" : "bg-line")} />
+                <span key={i} className={cn("h-0.5 flex-1 rounded-full transition-colors duration-500", i <= active ? "bg-accent" : "bg-line")} />
               ))}
             </div>
           </motion.div>

@@ -21,7 +21,7 @@ export function Accordion({
   const uid = useId();
 
   return (
-    <div className={cn("border-t border-line", className)}>
+    <div className={cn("border-t border-fg", className)}>
       {items.map((item, i) => {
         const isOpen = open === item.id;
         const panelId = `${uid}-panel-${i}`;
@@ -38,15 +38,15 @@ export function Accordion({
                 <span
                   className={cn(
                     "font-serif text-xl leading-snug transition-colors duration-300 md:text-2xl",
-                    isOpen ? "text-gold" : "text-fg group-hover:text-gold",
+                    isOpen ? "text-accent" : "text-fg group-hover:text-accent",
                   )}
                 >
                   {item.title}
                 </span>
                 <span
                   className={cn(
-                    "mt-1 flex size-9 shrink-0 items-center justify-center rounded-full border transition-all duration-500",
-                    isOpen ? "rotate-45 border-gold bg-gold text-ink" : "border-line text-gold group-hover:border-gold",
+                    "mt-1 flex size-9 shrink-0 items-center justify-center border transition-all duration-500",
+                    isOpen ? "rotate-45 border-fg bg-fg text-bg" : "border-line text-fg group-hover:border-fg",
                   )}
                 >
                   <Plus className="size-4" strokeWidth={1.5} />
@@ -64,7 +64,7 @@ export function Accordion({
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <div className="max-w-3xl pb-8 text-[1.02rem] leading-relaxed text-muted [&_a]:text-gold [&_a]:underline [&_a]:underline-offset-4 [&_p+p]:mt-4 [&_strong]:font-medium [&_strong]:text-fg">
+                  <div className="max-w-3xl pb-8 text-[1.02rem] leading-relaxed text-muted [&_a]:text-accent [&_a]:underline [&_a]:underline-offset-4 [&_p+p]:mt-4 [&_strong]:font-medium [&_strong]:text-fg">
                     {item.content}
                   </div>
                 </motion.div>

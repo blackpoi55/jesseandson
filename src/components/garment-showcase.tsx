@@ -11,12 +11,12 @@ export function GarmentShowcase({ garments }: { garments: Garment[] }) {
       {garments.map((g, i) => (
         <article key={g.id} id={g.id} className="grid scroll-mt-32 items-center gap-10 md:grid-cols-12 md:gap-8">
           <div className={cn("relative md:col-span-6", i % 2 ? "md:order-2 md:col-start-7" : "md:col-start-1")}>
-            <MaskReveal from={i % 2 ? "right" : "left"} className="relative aspect-[4/5] rounded-[4px] bg-bg-alt">
+            <MaskReveal from={i % 2 ? "right" : "left"} className="relative aspect-[4/5] bg-bg-alt">
               <Image src={g.image} alt={g.name} fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
             </MaskReveal>
             <span
               className={cn(
-                "pointer-events-none absolute -bottom-10 font-display text-[7rem] leading-none text-gold/15 md:text-[10rem]",
+                "pointer-events-none absolute -bottom-10 font-display text-[7rem] leading-none text-accent/15 md:text-[10rem]",
                 i % 2 ? "-left-4 md:-left-16" : "-right-4 md:-right-16",
               )}
               aria-hidden
@@ -54,7 +54,7 @@ export function GarmentGrid({ garments }: { garments: Garment[] }) {
     <RevealGroup className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5" stagger={0.08}>
       {garments.map((g) => (
         <RevealItem key={g.id} className="group">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-bg-alt">
+          <div className="relative aspect-[4/5] overflow-hidden bg-bg-alt">
             <Image
               src={g.image}
               alt={g.name}
@@ -74,13 +74,13 @@ export function GarmentGrid({ garments }: { garments: Garment[] }) {
 /** Sticky jump-links to each garment on the page. */
 export function GarmentIndex({ garments }: { garments: Garment[] }) {
   return (
-    <nav aria-label="On this page" className="glass sticky top-0 z-30 border-y border-line-soft">
+    <nav aria-label="On this page" className="glass sticky top-[68px] z-30 border-b border-line xl:top-12">
       <ul className="container-x no-scrollbar flex gap-8 overflow-x-auto py-4">
         {garments.map((g) => (
           <li key={g.id}>
             <a
               href={`#${g.id}`}
-              className="text-[0.7rem] font-medium tracking-[0.22em] whitespace-nowrap text-muted uppercase transition-colors hover:text-gold"
+              className="text-[0.7rem] font-medium tracking-[0.22em] whitespace-nowrap text-muted uppercase transition-colors hover:text-accent"
             >
               {g.name}
             </a>

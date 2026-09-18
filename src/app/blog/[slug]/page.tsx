@@ -55,38 +55,37 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <header className="grain relative isolate overflow-hidden bg-ink pt-36 pb-16 text-ivory md:pt-44 md:pb-24">
-        {post.image && (
-          <Image src={post.image} alt="" fill priority sizes="100vw" className="-z-20 object-cover opacity-35 blur-[2px]" />
-        )}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/70 to-ink" />
-        <div className="container-narrow">
+      <header className="container-x pt-8 md:pt-10">
+        <Reveal direction="fade" className="flex items-center justify-between gap-4 border-b border-fg pb-3">
+          <Link href="/blog" className="inline-flex items-center gap-2 font-sans text-[0.62rem] tracking-[0.24em] uppercase hover:text-accent">
+            <ArrowLeft className="size-3.5" /> The journal
+          </Link>
+          <span className="flex items-center gap-2 font-sans text-[0.62rem] tracking-[0.24em] text-muted uppercase">
+            <Clock className="size-3.5" strokeWidth={1.5} /> {post.readingMinutes} min read
+          </span>
+        </Reveal>
+        <div className="mx-auto max-w-5xl py-14 text-center md:py-20">
           <Reveal direction="fade">
-            <Link href="/blog" className="inline-flex items-center gap-2 text-[0.68rem] tracking-[0.25em] text-champagne uppercase hover:underline">
-              <ArrowLeft className="size-3.5" /> The journal
-            </Link>
+            <p className="eyebrow text-accent">Journal · By Jesse &amp; Son</p>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="mt-8 font-serif text-4xl leading-[1.05] font-light md:text-6xl">{post.title}</h1>
+            <h1 className="mt-6 font-serif text-[2.6rem] leading-[1.02] font-normal tracking-[-0.01em] md:text-7xl">{post.title}</h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ivory/70">{post.description}</p>
-          </Reveal>
-          <Reveal delay={0.3} className="mt-8 flex items-center gap-6 text-[0.7rem] tracking-[0.22em] text-ivory/60 uppercase">
-            <span>By Jesse &amp; Son</span>
-            <span className="flex items-center gap-2">
-              <Clock className="size-3.5" strokeWidth={1.5} /> {post.readingMinutes} min read
-            </span>
+            <p className="mx-auto mt-8 max-w-3xl font-serif text-xl leading-relaxed text-muted italic md:text-2xl">{post.description}</p>
           </Reveal>
         </div>
       </header>
 
       {post.image && (
-        <div className="container-x -mt-2 md:-mt-4">
-          <Reveal direction="scale" className="relative mx-auto aspect-[16/9] max-w-6xl overflow-hidden rounded-[4px] shadow-card">
+        <figure className="container-x">
+          <Reveal direction="fade" className="relative mx-auto aspect-[16/9] max-w-6xl overflow-hidden bg-bg-alt">
             <Image src={post.image} alt={post.title} fill sizes="(min-width: 1280px) 1152px, 100vw" className="object-cover" priority />
           </Reveal>
-        </div>
+          <figcaption className="mx-auto mt-3 max-w-6xl font-sans text-[0.62rem] tracking-[0.22em] text-muted uppercase">
+            {post.title}
+          </figcaption>
+        </figure>
       )}
 
       <div className="container-x grid gap-16 py-20 lg:grid-cols-[16rem_1fr] lg:gap-20 xl:grid-cols-[18rem_1fr_6rem]">

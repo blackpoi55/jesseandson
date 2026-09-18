@@ -31,7 +31,7 @@ export function TableOfContents({ headings }: { headings: { id: string; text: st
       <p className="eyebrow">In this article</p>
       <div className="relative mt-6 pl-5">
         <div className="absolute top-0 bottom-0 left-0 w-px bg-line">
-          <motion.div style={{ scaleY: scrollYProgress }} className="h-full w-full origin-top bg-gold" />
+          <motion.div style={{ scaleY: scrollYProgress }} className="h-full w-full origin-top bg-accent" />
         </div>
         <ol className="space-y-3">
           {headings.map((h) => (
@@ -40,7 +40,7 @@ export function TableOfContents({ headings }: { headings: { id: string; text: st
                 href={`#${h.id}`}
                 className={cn(
                   "block text-[0.92rem] leading-snug transition-colors duration-300",
-                  active === h.id ? "text-gold" : "text-muted hover:text-fg",
+                  active === h.id ? "text-accent" : "text-muted hover:text-fg",
                 )}
               >
                 {h.text}
@@ -74,7 +74,7 @@ export function ShareButtons({ title }: { title: string }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="flex size-10 items-center justify-center rounded-full border border-line text-muted transition hover:border-gold hover:text-gold"
+          className="flex size-10 items-center justify-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
         >
           <Icon className="size-4" />
         </a>
@@ -88,9 +88,9 @@ export function ShareButtons({ title }: { title: string }) {
             setTimeout(() => setCopied(false), 2000);
           });
         }}
-        className="flex size-10 items-center justify-center rounded-full border border-line text-muted transition hover:border-gold hover:text-gold"
+        className="flex size-10 items-center justify-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
       >
-        {copied ? <Check className="size-4 text-gold" /> : <Link2 className="size-4" />}
+        {copied ? <Check className="size-4 text-accent" /> : <Link2 className="size-4" />}
       </button>
     </div>
   );

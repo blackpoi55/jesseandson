@@ -43,8 +43,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0d0c0b" },
-    { media: "(prefers-color-scheme: light)", color: "#faf7f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#111111" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
   ],
 };
 
@@ -85,7 +85,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           <a
             href="#main"
-            className="btn-gold fixed top-3 left-3 z-[130] -translate-y-24 rounded-[3px] px-5 py-3 font-serif italic focus:translate-y-0"
+            className="btn-primary fixed top-3 left-3 z-[130] -translate-y-24 px-5 py-3 font-serif italic focus:translate-y-0"
           >
             Skip to content
           </a>

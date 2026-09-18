@@ -7,9 +7,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       enableSystem={false}
-      storageKey="jesseandson-theme"
+      storageKey="jesseandson-edition"
       disableTransitionOnChange
     >
       <MotionConfig reducedMotion="user">{children}</MotionConfig>

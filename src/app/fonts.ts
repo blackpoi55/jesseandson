@@ -1,35 +1,28 @@
-import { Cinzel, Cormorant_Garamond, Great_Vibes, Jost } from "next/font/google";
+import { Bodoni_Moda, Jost, Newsreader } from "next/font/google";
 
-/** Trajan-style capitals for the wordmark and hero display. */
-export const cinzel = Cinzel({
+/** High-contrast Didone for mastheads, headlines and numerals — the magazine voice. */
+export const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-cinzel",
-  display: "swap",
-});
-
-/** Editorial serif for headlines and italic accents. */
-export const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  axes: ["opsz"],
+  variable: "--font-bodoni",
   display: "swap",
 });
 
-/** Clean geometric sans for body copy and UI. */
+/** Text serif for leads, pull quotes and long-form reading. */
+export const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+
+/** Geometric sans for labels, captions and UI. */
 export const jost = Jost({
   subsets: ["latin"],
   variable: "--font-jost",
   display: "swap",
 });
 
-/** Hand-lettered script for signature accents ("Made to Measure"). */
-export const script = Great_Vibes({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-great-vibes",
-  display: "swap",
-});
-
-export const fontVariables = [cinzel.variable, cormorant.variable, jost.variable, script.variable].join(" ");
+export const fontVariables = [bodoni.variable, newsreader.variable, jost.variable].join(" ");

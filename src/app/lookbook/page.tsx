@@ -32,7 +32,7 @@ export default function LookbookPage() {
           <Reveal>
             <blockquote className="font-serif text-4xl leading-tight font-light italic md:text-5xl">
               “{lookbookQuote.text}”
-              <footer className="mt-4 text-sm tracking-[0.3em] text-gold not-italic uppercase">— {lookbookQuote.author}</footer>
+              <footer className="mt-4 text-sm tracking-[0.3em] text-accent not-italic uppercase">— {lookbookQuote.author}</footer>
             </blockquote>
           </Reveal>
           <Reveal delay={0.15}>

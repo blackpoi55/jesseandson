@@ -34,7 +34,7 @@ export function ShoeGallery() {
               transition={{ duration: 0.55, delay: i * 0.03, ease: [0.22, 1, 0.36, 1] }}
             >
               <button type="button" onClick={() => setOpen(i)} data-cursor="view" className="group block w-full text-left">
-                <div className="relative aspect-square overflow-hidden rounded-[4px] bg-[#111]">
+                <div className="relative aspect-square overflow-hidden bg-[#111]">
                   <Image
                     src={s.image}
                     alt={`${s.name} — ${s.description}`}
@@ -46,7 +46,7 @@ export function ShoeGallery() {
                     {shoeTypes.find((t) => t.id === s.type)?.label}
                   </span>
                 </div>
-                <h3 className="mt-4 font-serif text-2xl transition-colors group-hover:text-gold">{s.name}</h3>
+                <h3 className="mt-4 font-serif text-2xl transition-colors group-hover:text-accent">{s.name}</h3>
                 <p className="mt-1 text-sm leading-relaxed text-muted">{s.description}</p>
               </button>
             </motion.li>

@@ -44,28 +44,28 @@ export default function ShoesPage() {
         </div>
       </section>
 
-      <section className="grain relative isolate bg-ink py-28 text-ivory md:py-36">
+      <section className="relative isolate bg-bg-alt py-28 text-fg md:py-36">
         <div className="container-x grid items-center gap-16 lg:grid-cols-[1fr_1.2fr]">
           <Reveal direction="scale" className="relative mx-auto aspect-square w-full max-w-lg">
             <Image src="/media/9b35c-shoes.webp" alt="Anatomy of a Jesse & Son shoe" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-contain" />
           </Reveal>
           <div>
-            <p className="eyebrow text-champagne">Shoe details</p>
+            <p className="eyebrow text-accent">Shoe details</p>
             <h2 className="mt-5 font-serif text-5xl leading-[1.05] md:text-6xl">
-              Built to be <em className="text-gold-gradient">resoled.</em>
+              Built to be <em className="text-accent-italic">resoled.</em>
             </h2>
             <RevealGroup as="ol" className="mt-12 space-y-7" stagger={0.1}>
               {shoeDetails.map((d, i) => (
-                <RevealItem as="li" key={d.title} className="group grid grid-cols-[4.5rem_1fr] gap-5 border-t border-ivory/10 pt-7">
-                  <div className="relative size-[4.5rem] overflow-hidden rounded-full border border-champagne/30">
+                <RevealItem as="li" key={d.title} className="group grid grid-cols-[4.5rem_1fr] gap-5 border-t border-line pt-7">
+                  <div className="relative size-[4.5rem] overflow-hidden rounded-full border border-line">
                     <Image src={d.image} alt="" fill sizes="72px" className="object-cover transition-transform duration-700 group-hover:scale-125" />
                   </div>
                   <div>
                     <h3 className="font-serif text-2xl">
-                      <span className="mr-3 font-display text-sm text-champagne">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="mr-3 font-display text-sm text-accent">{String(i + 1).padStart(2, "0")}</span>
                       {d.title}
                     </h3>
-                    <p className="mt-2 leading-relaxed text-ivory/65">{d.body}</p>
+                    <p className="mt-2 leading-relaxed text-muted">{d.body}</p>
                   </div>
                 </RevealItem>
               ))}

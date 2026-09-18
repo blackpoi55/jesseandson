@@ -57,7 +57,7 @@ export function CollectionPanels() {
             <Link
               href={p.href}
               data-cursor="view"
-              className="group relative isolate flex h-full overflow-hidden rounded-[4px] bg-ink text-ivory"
+              className="group relative isolate flex h-full overflow-hidden bg-ink text-ivory"
             >
               <Image
                 src={p.image}

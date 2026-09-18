@@ -56,7 +56,7 @@ export function Gallery({
               viewport={{ once: true, amount: 0.15 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.8, delay: (i % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-[4px] bg-bg-alt"
+              className="group relative mb-5 block w-full break-inside-avoid overflow-hidden bg-bg-alt"
               aria-label={`Open image: ${img.alt}`}
             >
               <Image

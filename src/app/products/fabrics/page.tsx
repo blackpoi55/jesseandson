@@ -40,10 +40,10 @@ export default function FabricsPage() {
             </Reveal>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <MaskReveal className="relative aspect-[3/4] rounded-[4px]">
+            <MaskReveal className="relative aspect-[3/4]">
               <Image src="/media/1f5f7-6-fabrics.webp" alt="Fabric books and swatches" fill sizes="25vw" className="object-cover" />
             </MaskReveal>
-            <MaskReveal delay={0.2} className="relative mt-16 aspect-[3/4] rounded-[4px]">
+            <MaskReveal delay={0.2} className="relative mt-16 aspect-[3/4]">
               <Image src="/media/86af7-03.webp" alt="Mill labels from Drago, SÖKTAŞ, Reda and more" fill sizes="25vw" className="object-cover" />
             </MaskReveal>
           </div>
@@ -67,16 +67,16 @@ export default function FabricsPage() {
         <Marquee items={mills} className="font-display text-2xl tracking-[0.2em] text-muted md:text-4xl" speed={40} />
       </section>
 
-      <section className="relative isolate overflow-hidden bg-ink text-ivory">
+      <section className="relative isolate overflow-hidden bg-bg-alt text-fg">
         <div className="grid lg:grid-cols-2">
           <ParallaxImage src="/media/7a96b-bemberg-lining1000.webp" alt="Bemberg lining" className="h-[55svh] lg:h-auto lg:min-h-[600px]" sizes="50vw" />
           <div className="flex items-center px-6 py-20 md:px-16">
             <div className="max-w-lg">
-              <p className="eyebrow text-champagne">Standard on every suit</p>
+              <p className="eyebrow text-accent">Standard on every suit</p>
               <h2 className="mt-5 font-serif text-5xl leading-[1.05] md:text-6xl">
-                The lining <em className="text-gold-gradient">you feel.</em>
+                The lining <em className="text-accent-italic">you feel.</em>
               </h2>
-              <p className="mt-6 text-lg leading-relaxed text-ivory/70">
+              <p className="mt-6 text-lg leading-relaxed text-muted">
                 Japanese Bemberg breathes cool air, absorbs moisture quickly and never clings — the same lining used by
                 Hugo Boss, Zegna and Giorgio Armani. It comes standard in every Jesse &amp; Son suit, in deep, silky
                 colors of your choosing.

@@ -25,20 +25,20 @@ function StepBlock({ step, index, onActive }: { step: ProcessStep; index: number
       className="scroll-mt-32 py-16 lg:min-h-[70svh] lg:py-24"
     >
       {/* Mobile image */}
-      <div className="relative mb-8 aspect-[4/3] overflow-hidden rounded-[4px] lg:hidden">
+      <div className="relative mb-8 aspect-[4/3] overflow-hidden lg:hidden">
         <Image src={step.image} alt={step.title} fill sizes="100vw" className="object-cover" />
       </div>
-      <span className="font-display text-7xl text-gold/30 md:text-8xl">{String(index + 1).padStart(2, "0")}</span>
+      <span className="font-display text-7xl text-accent/30 md:text-8xl">{String(index + 1).padStart(2, "0")}</span>
       <h3 className="-mt-3 font-serif text-5xl md:text-6xl">{step.title}</h3>
-      {step.subtitle && <p className="mt-3 font-serif text-xl text-gold italic">{step.subtitle}</p>}
+      {step.subtitle && <p className="mt-3 font-serif text-xl text-accent italic">{step.subtitle}</p>}
       <div className="mt-7 space-y-5 text-lg leading-relaxed text-muted">
         {step.body.map((p) => (
           <p key={p}>{p}</p>
         ))}
       </div>
       {step.note && (
-        <p className="mt-8 inline-flex items-center gap-3 rounded-full border border-gold/40 bg-gold-soft px-5 py-2.5 text-sm text-fg">
-          <span className="text-gold">✦</span>
+        <p className="mt-8 inline-flex items-center gap-3 rounded-full border border-accent/40 bg-accent-soft px-5 py-2.5 text-sm text-fg">
+          <span className="text-accent">✦</span>
           {step.note}
         </p>
       )}
@@ -56,7 +56,7 @@ export function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
     <div ref={ref} className="grid gap-12 lg:grid-cols-2 lg:gap-24">
       <div className="hidden lg:block">
         <div className="sticky top-28 h-[calc(100svh-9rem)]">
-          <div className="relative h-full overflow-hidden rounded-[4px] bg-ink">
+          <div className="relative h-full overflow-hidden bg-ink">
             <AnimatePresence initial={false}>
               <motion.div
                 key={steps[active].image}
@@ -107,8 +107,8 @@ export function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
             href={`#${s.id}`}
             aria-label={s.title}
             className={cn(
-              "pointer-events-auto block size-2.5 rounded-full border border-gold transition-all duration-500",
-              i === active ? "scale-125 bg-gold" : "bg-transparent",
+              "pointer-events-auto block size-2.5 rounded-full border border-accent transition-all duration-500",
+              i === active ? "scale-125 bg-accent" : "bg-transparent",
             )}
           />
         ))}

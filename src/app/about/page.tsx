@@ -42,7 +42,7 @@ export default function AboutPage() {
             </blockquote>
           </Reveal>
           <Reveal delay={0.3}>
-            <p className="mt-6 text-sm tracking-[0.35em] text-gold uppercase">— {aboutQuote.author}</p>
+            <p className="mt-6 text-sm tracking-[0.35em] text-accent uppercase">— {aboutQuote.author}</p>
           </Reveal>
         </div>
       </section>
@@ -51,7 +51,7 @@ export default function AboutPage() {
       <section className="pb-28 md:pb-40">
         <div className="container-x grid items-start gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-24">
           <div className="relative isolate lg:sticky lg:top-32">
-            <MaskReveal className="relative aspect-[3/4] w-full max-w-md rounded-[4px]">
+            <MaskReveal className="relative aspect-[3/4] w-full max-w-md">
               <Image
                 src="/media/72382-jesseandson-portrait.webp"
                 alt="The family behind Jesse & Son"
@@ -60,8 +60,8 @@ export default function AboutPage() {
                 className="object-cover"
               />
             </MaskReveal>
-            <div className="absolute top-8 left-8 -z-10 aspect-[3/4] w-full max-w-md rounded-[4px] border border-gold/40" />
-            <p className="font-script mt-6 text-5xl text-gold">Jesse &amp; Son</p>
+            <div className="absolute top-8 left-8 -z-10 aspect-[3/4] w-full max-w-md border border-accent/40" />
+            <p className="font-script mt-6 text-5xl text-accent">Jesse &amp; Son</p>
             <p className="text-xs tracking-[0.3em] text-muted uppercase">The family behind the house</p>
           </div>
           <div>
@@ -69,7 +69,7 @@ export default function AboutPage() {
             <div className="mt-10 space-y-6 text-lg leading-relaxed text-muted">
               {story.map((p, i) => (
                 <Reveal key={i} delay={i * 0.08}>
-                  <p className={cn(i === 0 && "first-letter:float-left first-letter:mr-3 first-letter:font-display first-letter:text-7xl first-letter:leading-[0.8] first-letter:text-gold")}>
+                  <p className={cn(i === 0 && "first-letter:float-left first-letter:mr-3 first-letter:font-display first-letter:text-7xl first-letter:leading-[0.8] first-letter:text-accent")}>
                     {p}
                   </p>
                 </Reveal>
@@ -78,7 +78,7 @@ export default function AboutPage() {
             <RevealGroup className="mt-14 grid grid-cols-2 gap-8 border-t border-line pt-10">
               {stats.map((s) => (
                 <RevealItem key={s.label}>
-                  <CountUp value={s.value} className="font-display text-5xl text-gold" />
+                  <CountUp value={s.value} className="font-display text-5xl text-accent" />
                   <p className="mt-2 text-[0.7rem] tracking-[0.25em] text-muted uppercase">{s.label}</p>
                 </RevealItem>
               ))}
@@ -103,13 +103,13 @@ export default function AboutPage() {
               <div key={r.title} className="grid items-center gap-10 md:grid-cols-2 md:gap-20">
                 <MaskReveal
                   from={i % 2 ? "right" : "left"}
-                  className={cn("relative aspect-[4/3] rounded-[4px]", i % 2 && "md:order-2")}
+                  className={cn("relative aspect-[4/3]", i % 2 && "md:order-2")}
                 >
                   <Image src={r.image} alt="" fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
                 </MaskReveal>
                 <div>
                   <Reveal>
-                    <span className="font-display text-7xl text-gold/30 md:text-8xl">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-display text-7xl text-accent/30 md:text-8xl">{String(i + 1).padStart(2, "0")}</span>
                   </Reveal>
                   <Reveal delay={0.1}>
                     <h3 className="-mt-4 font-serif text-4xl md:text-5xl">{r.title}</h3>

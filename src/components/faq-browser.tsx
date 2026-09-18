@@ -25,17 +25,17 @@ export function FaqBrowser() {
   return (
     <div>
       <div className="relative">
-        <Search className="pointer-events-none absolute top-1/2 left-0 size-5 -translate-y-1/2 text-gold" strokeWidth={1.5} />
+        <Search className="pointer-events-none absolute top-1/2 left-0 size-5 -translate-y-1/2 text-accent" strokeWidth={1.5} />
         <input
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search questions — e.g. “3 days”, “buttons”, “shipping”"
           aria-label="Search frequently asked questions"
-          className="w-full border-0 border-b border-line bg-transparent py-5 pr-10 pl-9 font-serif text-2xl text-fg outline-none placeholder:text-subtle focus:border-gold md:text-3xl"
+          className="w-full border-0 border-b border-line bg-transparent py-5 pr-10 pl-9 font-serif text-2xl text-fg outline-none placeholder:text-subtle focus:border-accent md:text-3xl"
         />
         {q && (
-          <button onClick={() => setQ("")} aria-label="Clear search" className="absolute top-1/2 right-0 -translate-y-1/2 text-muted hover:text-gold">
+          <button onClick={() => setQ("")} aria-label="Clear search" className="absolute top-1/2 right-0 -translate-y-1/2 text-muted hover:text-accent">
             <X className="size-5" />
           </button>
         )}

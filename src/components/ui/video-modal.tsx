@@ -37,13 +37,13 @@ export function VideoButton({
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          "group/video inline-flex h-14 items-center gap-4 rounded-[3px] border border-ivory/40 pr-7 pl-2 font-serif text-[1.3rem] text-ivory italic transition-all duration-500 hover:border-champagne",
+          "group/video inline-flex h-12 items-center justify-center gap-3 border border-fg pr-6 pl-2 font-sans text-[0.7rem] font-medium tracking-[0.22em] text-fg uppercase transition-colors duration-300 hover:bg-fg hover:text-bg",
           className,
         )}
       >
-        <span className="relative flex size-10 items-center justify-center rounded-full border border-ivory/60 transition-colors duration-500 group-hover/video:border-champagne group-hover/video:bg-champagne group-hover/video:text-ink">
-          <span className="absolute inset-0 animate-ping rounded-full border border-champagne/50 [animation-duration:2.4s]" />
-          <Play className="ml-0.5 size-4 fill-current" strokeWidth={1} />
+        <span className="relative flex size-8 items-center justify-center rounded-full border border-current">
+          <span className="absolute inset-0 animate-ping rounded-full border border-accent/50 [animation-duration:2.4s]" />
+          <Play className="ml-0.5 size-3 fill-current" strokeWidth={1} />
         </span>
         {label}
       </button>
@@ -70,7 +70,7 @@ export function VideoButton({
                   <X className="size-5" strokeWidth={1.5} />
                 </button>
                 <motion.div
-                  className="aspect-video w-full max-w-6xl overflow-hidden rounded-[4px] border border-champagne/20 bg-black shadow-2xl"
+                  className="aspect-video w-full max-w-6xl overflow-hidden border border-champagne/20 bg-black shadow-2xl"
                   initial={{ scale: 0.9, y: 30 }}
                   animate={{ scale: 1, y: 0 }}
                   exit={{ scale: 0.95, opacity: 0 }}

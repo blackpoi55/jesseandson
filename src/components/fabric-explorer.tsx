@@ -56,7 +56,7 @@ export function FabricExplorer() {
                 type="button"
                 onClick={() => setSelected(f)}
                 data-cursor="view"
-                className="group relative block aspect-[3/4] w-full overflow-hidden rounded-[4px] bg-ink text-left text-ivory"
+                className="group relative block aspect-[3/4] w-full overflow-hidden bg-ink text-left text-ivory"
               >
                 <motion.div layoutId={`fabric-img-${f.id}`} className="absolute inset-0">
                   <Image
@@ -104,7 +104,7 @@ export function FabricExplorer() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: 60, opacity: 0 }}
                   transition={{ duration: 0.6, ease: EASE }}
-                  className="relative grid max-h-[92svh] w-full max-w-5xl overflow-y-auto rounded-t-[6px] bg-elevated text-fg md:grid-cols-2 md:rounded-[6px]"
+                  className="relative grid max-h-[92svh] w-full max-w-5xl overflow-y-auto bg-elevated text-fg md:grid-cols-2"
                 >
                   <motion.div layoutId={`fabric-img-${selected.id}`} className="relative aspect-[4/3] md:aspect-auto md:min-h-[520px]">
                     <Image src={selected.image} alt={selected.name} fill sizes="50vw" className="object-cover" />
@@ -112,10 +112,10 @@ export function FabricExplorer() {
                   <div className="flex flex-col p-8 md:p-12">
                     <p className="eyebrow">{fabricGroups.find((g) => g.id === selected.group)?.label}</p>
                     <h3 className="mt-4 font-serif text-5xl leading-none">{selected.name}</h3>
-                    <p className="mt-3 font-serif text-xl text-gold italic">{selected.composition}</p>
+                    <p className="mt-3 font-serif text-xl text-accent italic">{selected.composition}</p>
                     <p className="mt-7 text-lg leading-relaxed text-muted">{selected.description}</p>
                     {selected.note && (
-                      <p className="mt-6 border-l border-gold pl-5 text-[0.95rem] leading-relaxed text-muted">{selected.note}</p>
+                      <p className="mt-6 border-l border-accent pl-5 text-[0.95rem] leading-relaxed text-muted">{selected.note}</p>
                     )}
                     <div className="mt-auto flex flex-wrap gap-3 pt-10">
                       <LinkButton href="/contact#appointment" size="sm">

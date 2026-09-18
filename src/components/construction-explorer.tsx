@@ -66,7 +66,7 @@ export function ConstructionExplorer() {
           {/* Garment + loupe */}
           <div className="relative lg:sticky lg:top-28">
             <div className="relative mx-auto aspect-square w-full max-w-xl">
-              <div className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle,var(--gold-soft)_0%,transparent_70%)] blur-2xl" />
+              <div className="absolute inset-[12%] rounded-full bg-[radial-gradient(circle,var(--accent-soft)_0%,transparent_70%)] blur-2xl" />
               <motion.div
                 className="absolute inset-0"
                 animate={{ y: [0, -12, 0] }}
@@ -81,12 +81,12 @@ export function ConstructionExplorer() {
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ type: "spring", stiffness: 220, damping: 22 }}
-                  className="absolute -right-2 -bottom-4 size-40 overflow-hidden rounded-full border-4 border-bg shadow-card ring-1 ring-gold/60 md:size-52"
+                  className="absolute -right-2 -bottom-4 size-40 overflow-hidden rounded-full border-4 border-bg ring-1 ring-fg/40 md:size-52"
                 >
                   <Image src={part.details[detail].image} alt={part.details[detail].title} fill sizes="208px" className="object-cover" />
                 </motion.div>
               </AnimatePresence>
-              <span className="absolute -right-2 -bottom-4 flex size-10 translate-x-2 translate-y-2 items-center justify-center rounded-full bg-gold font-display text-sm text-ink md:size-12">
+              <span className="absolute -right-2 -bottom-4 flex size-10 translate-x-2 translate-y-2 items-center justify-center rounded-full bg-fg font-display text-sm text-bg md:size-12">
                 {String(detail + 1).padStart(2, "0")}
               </span>
             </div>
@@ -109,7 +109,7 @@ export function ConstructionExplorer() {
                     <span
                       className={cn(
                         "font-display text-lg transition-colors duration-300",
-                        i === detail ? "text-gold" : "text-subtle",
+                        i === detail ? "text-accent" : "text-subtle",
                       )}
                     >
                       {String(i + 1).padStart(2, "0")}
@@ -118,7 +118,7 @@ export function ConstructionExplorer() {
                       <span
                         className={cn(
                           "block font-serif text-2xl transition-colors duration-300 md:text-[1.7rem]",
-                          i === detail ? "text-gold" : "group-hover:text-gold",
+                          i === detail ? "text-accent" : "group-hover:text-accent",
                         )}
                       >
                         {d.title}
@@ -130,18 +130,18 @@ export function ConstructionExplorer() {
               ))}
             </ol>
 
-            <div className="mt-12 rounded-[4px] border border-line bg-bg-alt p-8">
+            <div className="mt-12 border border-line bg-bg-alt p-8">
               <p className="eyebrow">Customisable options</p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {part.options.map((o) => (
                   <li key={o} className="flex items-center gap-3">
-                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-gold-soft text-gold">
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
                       <Check className="size-3.5" strokeWidth={2} />
                     </span>
                     {o}
                   </li>
                 ))}
-                <li className="flex items-center gap-3 font-serif text-lg text-gold italic sm:col-span-2">
+                <li className="flex items-center gap-3 font-serif text-lg text-accent italic sm:col-span-2">
                   …plus many more choices in store.
                 </li>
               </ul>

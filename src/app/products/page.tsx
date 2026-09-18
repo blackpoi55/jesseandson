@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/cta-band";
-import { Tilt } from "@/components/motion/effects";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { PageHero } from "@/components/page-hero";
 import { ImageCard } from "@/components/ui/image-card";
@@ -61,17 +60,15 @@ export default function ProductsPage() {
             title="Choose where to *begin.*"
             lead="Quality and fit are what set us apart — clothing crafted to serve you for many years, at fixed and fair prices."
           />
-          <RevealGroup className="mt-16 grid gap-5 md:grid-cols-2" stagger={0.1}>
+          <RevealGroup className="mt-16 grid gap-x-8 gap-y-14 md:grid-cols-2" stagger={0.1}>
             {categories.map((c, i) => (
-              <RevealItem key={c.href}>
-                <Tilt max={4}>
-                  <ImageCard
-                    {...c}
-                    eyebrow={`0${i + 1}`}
-                    className="h-[440px] md:h-[560px]"
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                  />
-                </Tilt>
+              <RevealItem key={c.href} className={i % 2 ? "md:mt-24" : undefined}>
+                <ImageCard
+                  {...c}
+                  eyebrow={`No. 0${i + 1}`}
+                  aspect="aspect-[4/5]"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
               </RevealItem>
             ))}
           </RevealGroup>

@@ -7,7 +7,7 @@ const EASE = [0.76, 0, 0.24, 1] as const;
 const KEY = "js-intro-seen";
 
 /**
- * First-visit intro: a gold needle stitches a line, the name appears,
+ * First-visit intro: a needle stitches a line, the masthead appears,
  * then the curtain lifts. Shown once per browser session.
  */
 export function Preloader() {
@@ -45,12 +45,12 @@ export function Preloader() {
       {show && (
         <motion.div
           aria-hidden
-          className="fixed inset-0 z-[120] flex flex-col items-center justify-center bg-ink text-ivory"
+          className="fixed inset-0 z-[120] flex flex-col items-center justify-center bg-bg text-fg"
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           initial={{ clipPath: "inset(0 0 0% 0)" }}
           transition={{ duration: 1.1, ease: EASE }}
         >
-          <svg viewBox="0 0 300 40" className="w-64 text-champagne md:w-80">
+          <svg viewBox="0 0 300 40" className="w-64 text-accent md:w-80">
             <motion.path
               d="M5 20 H295"
               stroke="currentColor"
@@ -67,7 +67,7 @@ export function Preloader() {
               transition={{ duration: 1.3, ease: [0.65, 0, 0.35, 1] }}
             >
               <path d="M0 20 L-14 17.5 L-14 22.5 Z" fill="currentColor" />
-              <circle cx="-11" cy="20" r="1" fill="#0d0c0b" />
+              <circle cx="-11" cy="20" r="1" fill="var(--bg)" />
             </motion.g>
           </svg>
           <p className="mt-8 flex font-display text-3xl tracking-[0.12em] md:text-5xl">
@@ -77,7 +77,7 @@ export function Preloader() {
                 initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.7, delay: 0.5 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                className={l === "&" ? "mx-2 font-serif text-champagne italic" : undefined}
+                className={l === "&" ? "mx-2 font-serif text-accent italic" : undefined}
               >
                 {l === " " ? " " : l}
               </motion.span>
@@ -87,7 +87,7 @@ export function Preloader() {
             initial={{ opacity: 0, letterSpacing: "0.2em" }}
             animate={{ opacity: 1, letterSpacing: "0.5em" }}
             transition={{ duration: 1.2, delay: 1 }}
-            className="mt-4 text-[0.65rem] text-champagne uppercase"
+            className="mt-4 text-[0.65rem] text-muted uppercase"
           >
             Bespoke Tailor · Bangkok
           </motion.p>

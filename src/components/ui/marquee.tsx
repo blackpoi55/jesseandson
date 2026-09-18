@@ -17,7 +17,7 @@ export function Marquee({
       {items.map((item, i) => (
         <span key={i} className="flex items-center">
           <span className="px-8 md:px-12">{item}</span>
-          <span className="text-[0.6em] text-gold">{separator}</span>
+          <span className="text-[0.6em] text-accent">{separator}</span>
         </span>
       ))}
     </div>

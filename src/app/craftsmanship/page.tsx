@@ -41,10 +41,10 @@ export default function CraftsmanshipPage() {
             </Reveal>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <MaskReveal className="relative aspect-[3/4] rounded-[4px]">
+            <MaskReveal className="relative aspect-[3/4]">
               <Image src="/media/f3eba-3-soft-collar.webp" alt="Hand-felled collar" fill sizes="25vw" className="object-cover" />
             </MaskReveal>
-            <MaskReveal delay={0.2} className="relative mt-14 aspect-[3/4] rounded-[4px]">
+            <MaskReveal delay={0.2} className="relative mt-14 aspect-[3/4]">
               <Image src="/media/bcf2f-5-buttons.webp" alt="Horn buttons on a jacket sleeve" fill sizes="25vw" className="object-cover" />
             </MaskReveal>
           </div>

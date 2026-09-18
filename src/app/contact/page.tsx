@@ -38,7 +38,7 @@ export default function ContactPage() {
 
       <section id="appointment" className="scroll-mt-24 py-24 md:py-32">
         <div className="container-x grid gap-16 lg:grid-cols-[1.35fr_1fr] lg:gap-20">
-          <Reveal className="rounded-[4px] border border-line-soft bg-elevated p-7 shadow-card md:p-12">
+          <Reveal className="border border-line-soft bg-elevated p-7 md:p-12">
             <ContactForm />
           </Reveal>
 
@@ -50,22 +50,22 @@ export default function ContactPage() {
                 href={site.social.googleMaps}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group mt-5 flex gap-3 text-lg text-muted hover:text-gold"
+                className="group mt-5 flex gap-3 text-lg text-muted hover:text-accent"
               >
-                <MapPin className="mt-1 size-5 shrink-0 text-gold" strokeWidth={1.4} />
+                <MapPin className="mt-1 size-5 shrink-0 text-accent" strokeWidth={1.4} />
                 <span>
                   {site.address.lines.map((l) => (
                     <span key={l} className="block">
                       {l}
                     </span>
                   ))}
-                  <span className="mt-2 block text-[0.7rem] tracking-[0.25em] text-gold uppercase group-hover:underline">
+                  <span className="mt-2 block text-[0.7rem] tracking-[0.25em] text-accent uppercase group-hover:underline">
                     Open in Google Maps →
                   </span>
                 </span>
               </a>
               <p className="mt-5 flex gap-3 text-lg text-muted">
-                <Clock className="mt-1 size-5 shrink-0 text-gold" strokeWidth={1.4} />
+                <Clock className="mt-1 size-5 shrink-0 text-accent" strokeWidth={1.4} />
                 <span>
                   Monday – Saturday, 10:00 – 20:00
                   <span className="block text-subtle">Closed Sunday</span>
@@ -80,9 +80,9 @@ export default function ContactPage() {
                     href={href}
                     target={href.startsWith("http") ? "_blank" : undefined}
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-4 rounded-[4px] border border-line p-4 transition-all duration-300 hover:border-gold hover:bg-gold-soft"
+                    className="group flex items-center gap-4 border border-line p-4 transition-all duration-300 hover:border-accent hover:bg-accent-soft"
                   >
-                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors group-hover:bg-gold group-hover:text-ink">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-accent/40 text-accent transition-colors group-hover:bg-accent group-hover:text-ink">
                       <Icon className="size-5" strokeWidth={1.4} />
                     </span>
                     <span className="min-w-0">
@@ -94,12 +94,12 @@ export default function ContactPage() {
               ))}
             </RevealGroup>
 
-            <div className="rounded-[4px] border border-gold/30 bg-gold-soft p-7">
+            <div className="border border-accent/30 bg-accent-soft p-7">
               <p className="eyebrow">Tips before visiting us</p>
               <ul className="mt-5 space-y-3">
                 {visitTips.map((t) => (
                   <li key={t} className="flex gap-3 text-[0.98rem] leading-relaxed">
-                    <span className="text-gold">✦</span>
+                    <span className="text-accent">✦</span>
                     {t}
                   </li>
                 ))}
@@ -116,7 +116,7 @@ export default function ContactPage() {
         <div className="container-x">
           <SectionHeading eyebrow="Find us" title="On Sukhumvit *Soi 10.*" lead="Just off Sukhumvit Road on Soi 10, in Khlong Toei. Open the map in Google Maps for directions from your hotel." />
           <Reveal className="mt-12">
-            <div className="relative h-[60svh] min-h-[420px] overflow-hidden rounded-[4px] border border-line">
+            <div className="relative h-[60svh] min-h-[420px] overflow-hidden border border-line">
               <iframe
                 title="Map to Jesse & Son"
                 src={site.mapEmbed}

@@ -38,7 +38,7 @@ export function SplitText({
         return (
           <span key={i} aria-hidden="true" className="inline-block overflow-hidden pb-[0.12em] align-bottom">
             <motion.span
-              className={cn("inline-block", accent && "font-serif italic text-gold")}
+              className={cn("inline-block", accent && "font-serif italic text-accent")}
               variants={{
                 hidden: { y: "110%", rotate: 4 },
                 show: {

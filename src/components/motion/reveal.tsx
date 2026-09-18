@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, type Variants } from "motion/react";
-import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 

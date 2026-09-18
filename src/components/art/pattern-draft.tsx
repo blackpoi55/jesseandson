@@ -40,7 +40,7 @@ const grainlines = [
  */
 export function PatternDraft({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 840 500" className={cn("text-gold", className)} aria-hidden="true">
+    <svg viewBox="0 0 840 500" className={cn("text-accent", className)} aria-hidden="true">
       <motion.g initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}>
         {pieces.map((d, i) => (
           <g key={i}>

@@ -43,7 +43,7 @@ export default function ProcessPage() {
               <TextLink href="/blog/first-time-getting-a-suit-in-bangkok-start-here">First-time guide to a suit in Bangkok</TextLink>
             </Reveal>
           </div>
-          <div className="rounded-[4px] border border-line bg-bg-alt p-6 md:p-10">
+          <div className="border border-line bg-bg-alt p-6 md:p-10">
             <PatternDraft className="w-full" />
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function ProcessPage() {
           <RevealGroup as="ol" className="divide-y divide-line border-y border-line" stagger={0.08}>
             {visitTips.map((tip, i) => (
               <RevealItem as="li" key={tip} className="flex items-baseline gap-6 py-6">
-                <span className="font-display text-lg text-gold">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-display text-lg text-accent">{String(i + 1).padStart(2, "0")}</span>
                 <span className="font-serif text-2xl leading-snug">{tip}</span>
               </RevealItem>
             ))}

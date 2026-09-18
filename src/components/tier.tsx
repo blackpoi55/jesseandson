@@ -8,7 +8,7 @@ export function TierBadge({ tier, className, showName = false }: { tier: Tier; c
   return (
     <span className={cn("inline-flex items-center gap-2", className)} aria-label={`Price tier ${tier} of 4 (${names[tier]})`}>
       <span className="font-display tracking-[0.12em]" aria-hidden>
-        <span className="text-gold">{"$".repeat(tier)}</span>
+        <span className="text-accent">{"$".repeat(tier)}</span>
         <span className="text-line">{"$".repeat(4 - tier)}</span>
       </span>
       {showName && <span className="text-[0.62rem] tracking-[0.22em] text-subtle uppercase">{names[tier]}</span>}

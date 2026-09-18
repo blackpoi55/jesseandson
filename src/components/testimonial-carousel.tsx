@@ -38,10 +38,10 @@ export function TestimonialCarousel() {
           href={site.social.googleReviews}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 rounded-full border border-line px-5 py-2.5 transition hover:border-gold"
+          className="inline-flex items-center gap-3 rounded-full border border-line px-5 py-2.5 transition hover:border-accent"
         >
           <GoogleIcon className="size-5" />
-          <span className="flex gap-0.5 text-gold">
+          <span className="flex gap-0.5 text-accent">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star key={i} className="size-4 fill-current" strokeWidth={0} />
             ))}
@@ -51,7 +51,7 @@ export function TestimonialCarousel() {
       </div>
 
       <div className="relative mx-auto mt-14 min-h-[22rem] max-w-4xl text-center md:min-h-[19rem]">
-        <span aria-hidden className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 font-serif text-[12rem] leading-none text-gold/15">
+        <span aria-hidden className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 font-serif text-[12rem] leading-none text-accent/15">
           “
         </span>
         <AnimatePresence mode="wait" custom={dir}>
@@ -77,13 +77,13 @@ export function TestimonialCarousel() {
             </blockquote>
             <figcaption className="mt-8 flex items-center justify-center gap-4">
               {t.avatar && (
-                <span className="relative size-12 overflow-hidden rounded-full border border-gold/40">
+                <span className="relative size-12 overflow-hidden rounded-full border border-accent/40">
                   <Image src={t.avatar} alt="" fill sizes="48px" className="object-cover" />
                 </span>
               )}
               <span className="text-left">
                 <span className="block font-display text-sm tracking-[0.15em]">{t.name}</span>
-                <span className="block text-xs tracking-[0.2em] text-gold uppercase">Google review</span>
+                <span className="block text-xs tracking-[0.2em] text-accent uppercase">Google review</span>
               </span>
             </figcaption>
           </motion.figure>
@@ -94,7 +94,7 @@ export function TestimonialCarousel() {
         <button
           onClick={() => go(-1)}
           aria-label="Previous review"
-          className="flex size-12 items-center justify-center rounded-full border border-line transition hover:border-gold hover:text-gold"
+          className="flex size-12 items-center justify-center rounded-full border border-line transition hover:border-accent hover:text-accent"
         >
           <ChevronLeft className="size-4" strokeWidth={1.5} />
         </button>
@@ -109,7 +109,7 @@ export function TestimonialCarousel() {
               <span
                 className={cn(
                   "block h-1 rounded-full transition-all duration-500",
-                  i === index ? "w-8 bg-gold" : "w-2 bg-line group-hover:bg-gold/50",
+                  i === index ? "w-8 bg-accent" : "w-2 bg-line group-hover:bg-accent/50",
                 )}
               />
             </button>
@@ -118,7 +118,7 @@ export function TestimonialCarousel() {
         <button
           onClick={() => go(1)}
           aria-label="Next review"
-          className="flex size-12 items-center justify-center rounded-full border border-gold text-gold transition hover:bg-gold hover:text-ink"
+          className="flex size-12 items-center justify-center rounded-full border border-accent text-accent transition hover:bg-accent hover:text-ink"
         >
           <ChevronRight className="size-4" strokeWidth={1.5} />
         </button>

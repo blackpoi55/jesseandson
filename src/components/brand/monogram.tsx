@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  */
 export function MonogramSeal({ className, spin = true }: { className?: string; spin?: boolean }) {
   return (
-    <svg viewBox="0 0 200 200" className={cn("text-gold", className)} aria-hidden="true">
+    <svg viewBox="0 0 200 200" className={cn("text-accent", className)} aria-hidden="true">
       <defs>
         <path id="seal-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
       </defs>

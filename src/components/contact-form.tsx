@@ -106,9 +106,9 @@ export function ContactForm({
   const subject = mode === "appointment" ? "Appointment request" : "Website enquiry";
 
   const field =
-    "peer w-full border-0 border-b border-line bg-transparent px-0 pt-6 pb-3 text-[1.02rem] text-fg outline-none transition-colors placeholder:text-transparent focus:border-gold focus:ring-0";
+    "peer w-full border-0 border-b border-line bg-transparent px-0 pt-6 pb-3 text-[1.02rem] text-fg outline-none transition-colors placeholder:text-transparent focus:border-accent focus:ring-0";
   const label =
-    "pointer-events-none absolute top-6 left-0 origin-left text-[0.95rem] text-subtle transition-all duration-300 peer-focus:top-0 peer-focus:scale-[0.78] peer-focus:text-gold peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-[0.78]";
+    "pointer-events-none absolute top-6 left-0 origin-left text-[0.95rem] text-subtle transition-all duration-300 peer-focus:top-0 peer-focus:scale-[0.78] peer-focus:text-accent peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:scale-[0.78]";
 
   return (
     <div className={cn("relative", className)}>
@@ -125,7 +125,7 @@ export function ContactForm({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
-              className="btn-gold flex size-20 items-center justify-center rounded-full"
+              className="btn-primary flex size-20 items-center justify-center rounded-full"
             >
               <Check className="size-9" strokeWidth={1.5} />
             </motion.span>
@@ -139,7 +139,7 @@ export function ContactForm({
                 setValues(empty);
                 setStatus("idle");
               }}
-              className="mt-8 text-[0.7rem] tracking-[0.25em] text-gold uppercase hover:underline"
+              className="mt-8 text-[0.7rem] tracking-[0.25em] text-accent uppercase hover:underline"
             >
               Send another message
             </button>
@@ -153,7 +153,7 @@ export function ContactForm({
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               <a
                 href={`mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`}
-                className="flex items-center justify-center gap-3 rounded-[3px] border border-line px-5 py-4 transition hover:border-gold hover:text-gold"
+                className="flex items-center justify-center gap-3 border border-line px-5 py-4 transition hover:border-accent hover:text-accent"
               >
                 <Mail className="size-5" strokeWidth={1.4} /> Email
               </a>
@@ -161,7 +161,7 @@ export function ContactForm({
                 href={`${site.whatsapp}?text=${encodeURIComponent(text)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 rounded-[3px] border border-line px-5 py-4 transition hover:border-[#25D366] hover:text-[#25D366]"
+                className="flex items-center justify-center gap-3 border border-line px-5 py-4 transition hover:border-[#25D366] hover:text-[#25D366]"
               >
                 <WhatsAppIcon className="size-5" /> WhatsApp
               </a>
@@ -170,20 +170,20 @@ export function ContactForm({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => navigator.clipboard?.writeText(text).catch(() => {})}
-                className="flex items-center justify-center gap-3 rounded-[3px] border border-line px-5 py-4 transition hover:border-[#06C755] hover:text-[#06C755]"
+                className="flex items-center justify-center gap-3 border border-line px-5 py-4 transition hover:border-[#06C755] hover:text-[#06C755]"
               >
                 <LineIcon className="size-5" /> LINE
               </a>
             </div>
             <p className="mt-4 text-xs text-subtle">Choosing LINE copies your message so you can paste it into the chat.</p>
-            <button onClick={() => setStatus("idle")} className="mt-8 text-[0.7rem] tracking-[0.25em] text-gold uppercase hover:underline">
+            <button onClick={() => setStatus("idle")} className="mt-8 text-[0.7rem] tracking-[0.25em] text-accent uppercase hover:underline">
               ← Back to the form
             </button>
           </motion.div>
         ) : (
           <motion.form key="form" noValidate onSubmit={submit} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             {showTabs && (
-              <div role="tablist" className="mb-10 inline-flex rounded-full border border-line p-1">
+              <div role="tablist" className="mb-10 inline-flex border border-fg">
                 {(["appointment", "general"] as const).map((m) => (
                   <button
                     key={m}
@@ -192,12 +192,12 @@ export function ContactForm({
                     aria-selected={mode === m}
                     onClick={() => setMode(m)}
                     className={cn(
-                      "relative rounded-full px-5 py-2.5 text-[0.7rem] font-medium tracking-[0.2em] uppercase transition-colors",
-                      mode === m ? "text-ink" : "text-muted hover:text-fg",
+                      "relative px-5 py-3 text-[0.66rem] font-medium tracking-[0.2em] uppercase transition-colors",
+                      mode === m ? "text-bg" : "text-muted hover:text-fg",
                     )}
                   >
                     {mode === m && (
-                      <motion.span layoutId={`${uid}-tab`} className="btn-gold absolute inset-0 rounded-full" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
+                      <motion.span layoutId={`${uid}-tab`} className="absolute inset-0 bg-fg" transition={{ type: "spring", stiffness: 380, damping: 32 }} />
                     )}
                     <span className="relative">{m === "appointment" ? "Book an appointment" : "General enquiry"}</span>
                   </button>
@@ -238,7 +238,7 @@ export function ContactForm({
                 <label htmlFor={`${uid}-garment`} className={cn(label, values.garment && "top-0 scale-[0.78]")}>
                   Garment you&apos;re interested in
                 </label>
-                <span className="pointer-events-none absolute right-0 bottom-4 text-gold">▾</span>
+                <span className="pointer-events-none absolute right-0 bottom-4 text-accent">▾</span>
               </div>
 
               <AnimatePresence initial={false}>
@@ -268,7 +268,7 @@ export function ContactForm({
                       <label htmlFor={`${uid}-time`} className={cn(label, values.visitTime && "top-0 scale-[0.78]")}>
                         Preferred time
                       </label>
-                      <span className="pointer-events-none absolute right-0 bottom-4 text-gold">▾</span>
+                      <span className="pointer-events-none absolute right-0 bottom-4 text-accent">▾</span>
                     </div>
                   </motion.div>
                 )}
@@ -296,7 +296,7 @@ export function ContactForm({
             <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs text-subtle">
                 By sending, you agree to our{" "}
-                <a href="/privacy-policy" className="text-gold underline-offset-4 hover:underline">
+                <a href="/privacy-policy" className="text-accent underline-offset-4 hover:underline">
                   privacy policy
                 </a>
                 .
@@ -304,7 +304,7 @@ export function ContactForm({
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="btn-gold group/btn inline-flex h-14 items-center justify-center gap-3 rounded-[3px] px-10 font-serif text-[1.3rem] italic disabled:opacity-70"
+                className="btn-primary group/btn inline-flex h-14 items-center justify-center gap-3 px-10 font-sans text-[0.72rem] font-medium tracking-[0.22em] uppercase transition-colors disabled:opacity-70"
               >
                 {status === "sending" ? (
                   <>

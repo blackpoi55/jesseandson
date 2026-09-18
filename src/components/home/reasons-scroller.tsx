@@ -37,16 +37,16 @@ export function ReasonsScroller() {
         <div className="container-x flex flex-col gap-6 pt-24 pb-12 md:flex-row md:items-end md:justify-between lg:pt-10">
           <div>
             <p className="eyebrow flex items-center gap-4">
-              <span className="h-px w-8 bg-gold/60" />
+              <span className="h-px w-8 bg-accent/60" />
               Why Jesse &amp; Son
             </p>
             <h2 className="mt-5 font-serif text-5xl leading-[1.02] md:text-6xl lg:text-7xl">
-              Six simple <em className="text-gold">reasons.</em>
+              Six simple <em className="text-accent">reasons.</em>
             </h2>
           </div>
           <div className="hidden w-64 lg:block">
             <div className="h-px w-full bg-line">
-              <motion.div style={{ width: progress }} className="h-px bg-gold" />
+              <motion.div style={{ width: progress }} className="h-px bg-accent" />
             </div>
             <p className="mt-3 text-xs tracking-[0.3em] text-subtle uppercase">Scroll to explore</p>
           </div>
@@ -60,7 +60,7 @@ export function ReasonsScroller() {
           {reasons.map((r, i) => (
             <article
               key={r.title}
-              className="group relative flex w-[82vw] shrink-0 snap-start flex-col overflow-hidden rounded-[4px] border border-line-soft bg-elevated shadow-card sm:w-[26rem] lg:w-[30rem]"
+              className="group relative flex w-[82vw] shrink-0 snap-start flex-col overflow-hidden border border-line-soft bg-elevated sm:w-[26rem] lg:w-[30rem]"
             >
               <div className="relative aspect-[4/3] overflow-hidden" data-cursor="view">
                 <Image
@@ -77,9 +77,9 @@ export function ReasonsScroller() {
               <div className="flex flex-1 flex-col p-8">
                 <h3 className="font-serif text-3xl">{r.title}</h3>
                 <p className="mt-4 flex-1 leading-relaxed text-muted">{r.body}</p>
-                <Link href={r.link.href} className="mt-8 flex items-center justify-between text-gold">
+                <Link href={r.link.href} className="mt-8 flex items-center justify-between text-accent">
                   <span className="text-[0.7rem] font-medium tracking-[0.28em] uppercase">{r.link.label}</span>
-                  <ArrowCircle className="size-10 border-gold/50 group-hover:bg-gold group-hover:text-ink" />
+                  <ArrowCircle className="size-10 border-accent/50 group-hover:bg-accent group-hover:text-ink" />
                 </Link>
               </div>
             </article>

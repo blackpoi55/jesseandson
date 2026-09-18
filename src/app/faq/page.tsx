@@ -59,9 +59,9 @@ export default function FaqPage() {
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  className="group flex h-full flex-col items-center rounded-[4px] border border-line bg-elevated p-10 text-center transition-all duration-500 hover:-translate-y-1 hover:border-gold"
+                  className="group flex h-full flex-col items-center border border-line bg-elevated p-10 text-center transition-all duration-500 hover:-translate-y-1 hover:border-accent"
                 >
-                  <span className="flex size-14 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors group-hover:bg-gold group-hover:text-ink">
+                  <span className="flex size-14 items-center justify-center rounded-full border border-accent/40 text-accent transition-colors group-hover:bg-accent group-hover:text-ink">
                     <Icon className="size-6" strokeWidth={1.4} />
                   </span>
                   <span className="mt-6 font-serif text-2xl">{title}</span>

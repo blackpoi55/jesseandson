@@ -18,12 +18,12 @@ function Card({ t, index }: { t: Testimonial; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.8, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative mb-6 break-inside-avoid rounded-[4px] border border-line-soft bg-elevated p-8 shadow-card transition-colors duration-500 hover:border-gold/40 md:p-10"
+      className="group relative mb-6 break-inside-avoid border border-line-soft bg-elevated p-8 transition-colors duration-500 hover:border-accent/40 md:p-10"
     >
-      <span aria-hidden className="absolute top-4 right-6 font-serif text-7xl leading-none text-gold/15 transition-colors group-hover:text-gold/30">
+      <span aria-hidden className="absolute top-4 right-6 font-serif text-7xl leading-none text-accent/15 transition-colors group-hover:text-accent/30">
         ”
       </span>
-      <div className="flex gap-0.5 text-gold">
+      <div className="flex gap-0.5 text-accent">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} className="size-3.5 fill-current" strokeWidth={0} />
         ))}
@@ -50,20 +50,20 @@ function Card({ t, index }: { t: Testimonial; index: number }) {
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
-          className="mt-4 text-[0.7rem] font-medium tracking-[0.25em] text-gold uppercase hover:underline"
+          className="mt-4 text-[0.7rem] font-medium tracking-[0.25em] text-accent uppercase hover:underline"
         >
           {open ? "Show less" : "Read full review"}
         </button>
       )}
       <figcaption className="mt-8 flex items-center gap-4 border-t border-line-soft pt-6">
         {t.avatar && (
-          <span className="relative size-11 overflow-hidden rounded-full border border-gold/30">
+          <span className="relative size-11 overflow-hidden rounded-full border border-accent/30">
             <Image src={t.avatar} alt="" fill sizes="44px" className="object-cover" />
           </span>
         )}
         <span>
           <span className="block font-display text-sm tracking-[0.12em]">{t.name}</span>
-          <span className="block text-[0.65rem] tracking-[0.22em] text-gold uppercase">Google review</span>
+          <span className="block text-[0.65rem] tracking-[0.22em] text-accent uppercase">Google review</span>
         </span>
       </figcaption>
     </motion.figure>

@@ -42,7 +42,7 @@ export default function TestimonialsPage() {
           <Reveal className="mb-16 flex flex-col items-center gap-6 text-center">
             <div className="flex items-center gap-4">
               <GoogleIcon className="size-8" />
-              <span className="flex gap-1 text-gold">
+              <span className="flex gap-1 text-accent">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="size-6 fill-current" strokeWidth={0} />
                 ))}

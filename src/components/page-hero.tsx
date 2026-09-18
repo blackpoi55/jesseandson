@@ -3,7 +3,6 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import { SplitText } from "@/components/motion/split-text";
 import { cn } from "@/lib/utils";
@@ -11,8 +10,9 @@ import { cn } from "@/lib/utils";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Full-bleed cinematic page header: slow zoom + parallax photo,
- * breadcrumb, eyebrow, split-text title and an optional script flourish.
+ * Editorial article opener: folio line with breadcrumb, a very large
+ * Didone headline, standfirst beside it, then a wide photograph with
+ * a caption rule — like the first spread of a magazine feature.
  */
 export function PageHero({
   image,
@@ -24,6 +24,7 @@ export function PageHero({
   align = "left",
   size = "lg",
   imagePosition = "center",
+  caption,
   children,
 }: {
   image: string;
@@ -35,144 +36,120 @@ export function PageHero({
   align?: "left" | "center";
   size?: "md" | "lg";
   imagePosition?: string;
+  caption?: string;
   children?: React.ReactNode;
 }) {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const centered = align === "center";
 
   return (
-    <section
-      ref={ref}
-      className={cn(
-        "grain relative isolate flex overflow-hidden bg-ink text-ivory",
-        size === "lg" ? "min-h-[82svh] md:min-h-[88svh]" : "min-h-[60svh] md:min-h-[66svh]",
-      )}
-    >
-      <motion.div style={{ y }} className="absolute inset-0 -z-20">
+    <section className="border-b border-line">
+      <div className="container-x pt-8 md:pt-10">
+        {/* Folio line */}
         <motion.div
-          className="absolute inset-0"
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1.04, opacity: 1 }}
-          transition={{ duration: 2.2, ease: EASE }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="flex items-center gap-4 border-b border-fg pb-3"
         >
-          <Image
-            src={image}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-            style={{ objectPosition: imagePosition }}
-          />
-        </motion.div>
-      </motion.div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-transparent to-black/50" />
-
-      <motion.div
-        style={{ opacity: fade }}
-        className={cn(
-          "container-x flex w-full flex-col justify-end pt-36 pb-16 md:pb-24",
-          align === "center" && "items-center text-center",
-        )}
-      >
-        {crumbs.length > 0 && (
-          <motion.nav
-            aria-label="Breadcrumb"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-            className="mb-8"
-          >
-            <ol className="flex flex-wrap items-center gap-2 text-[0.68rem] tracking-[0.22em] text-ivory/60 uppercase">
+          <nav aria-label="Breadcrumb" className="min-w-0">
+            <ol className="flex flex-wrap items-center gap-2 font-sans text-[0.62rem] tracking-[0.22em] text-muted uppercase">
               <li>
-                <Link href="/" className="hover:text-champagne">
+                <Link href="/" className="hover:text-fg">
                   Home
                 </Link>
               </li>
               {crumbs.map((c) => (
                 <li key={c.label} className="flex items-center gap-2">
-                  <ChevronRight className="size-3" strokeWidth={1.5} />
+                  <span aria-hidden>/</span>
                   {c.href ? (
-                    <Link href={c.href} className="hover:text-champagne">
+                    <Link href={c.href} className="hover:text-fg">
                       {c.label}
                     </Link>
                   ) : (
-                    <span className="text-champagne" aria-current="page">
+                    <span className="text-fg" aria-current="page">
                       {c.label}
                     </span>
                   )}
                 </li>
               ))}
             </ol>
-          </motion.nav>
-        )}
+          </nav>
+          <span className="flex-1" />
+          <p className="eyebrow hidden text-accent sm:block">{eyebrow}</p>
+        </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, letterSpacing: "0.2em" }}
-          animate={{ opacity: 1, letterSpacing: "0.42em" }}
-          transition={{ duration: 1.4, delay: 0.35, ease: EASE }}
-          className="eyebrow text-champagne"
-        >
-          {eyebrow}
-        </motion.p>
-        <SplitText
-          as="h1"
-          animateOnMount
-          delay={0.45}
-          text={title}
-          className="mt-5 max-w-5xl font-serif text-[3rem] leading-[0.98] font-light sm:text-6xl md:text-7xl lg:text-[6.2rem]"
-        />
-        {script && (
-          <motion.p
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, delay: 1.1, ease: EASE }}
-            className={cn("font-script -mt-1 text-4xl text-champagne md:text-6xl", align === "left" && "md:pl-[8%]")}
-          >
-            {script}
-          </motion.p>
-        )}
-        {lead && (
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9, ease: EASE }}
-            className="mt-7 max-w-2xl text-lg leading-relaxed text-ivory/75 md:text-xl"
-          >
-            {lead}
-          </motion.p>
-        )}
-        {children && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.1, ease: EASE }}
-            className="mt-10"
-          >
-            {children}
-          </motion.div>
-        )}
-      </motion.div>
-
-      <motion.div
-        aria-hidden
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-[0.6rem] tracking-[0.4em] text-ivory/50 uppercase md:flex"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
-      >
-        Scroll
-        <span className="relative h-10 w-px overflow-hidden bg-ivory/20">
-          <motion.span
-            className="absolute inset-x-0 top-0 h-1/2 bg-champagne"
-            animate={{ y: ["-100%", "200%"] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        <div className={cn("pt-12 pb-10 md:pt-16 md:pb-14", centered && "text-center")}>
+          <p className="eyebrow text-accent sm:hidden">{eyebrow}</p>
+          <SplitText
+            as="h1"
+            animateOnMount
+            delay={0.15}
+            text={title}
+            className={cn(
+              "mt-4 font-serif text-[3rem] leading-[0.98] font-normal tracking-[-0.015em] sm:mt-0 sm:text-6xl md:text-7xl lg:text-[6.4rem]",
+              centered ? "mx-auto max-w-5xl" : "max-w-6xl",
+            )}
           />
-        </span>
-      </motion.div>
+          {(script || lead || children) && (
+            <div className={cn("mt-10 grid gap-8 md:grid-cols-12", centered && "justify-items-center")}>
+              {script && (
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.7, ease: EASE }}
+                  className="font-serif text-2xl text-muted italic md:col-span-5 md:text-3xl"
+                >
+                  {script}
+                </motion.p>
+              )}
+              {(lead || children) && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.8, ease: EASE }}
+                  className={cn(script ? "md:col-span-6 md:col-start-7" : "md:col-span-7 md:col-start-6")}
+                >
+                  {lead && <p className="text-[1.2rem] leading-relaxed text-muted md:text-[1.3rem]">{lead}</p>}
+                  {children && <div className="mt-8">{children}</div>}
+                </motion.div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Lead photograph */}
+      <div className="container-x pb-10">
+        <motion.div
+          ref={ref}
+          initial={{ clipPath: "inset(0 0 100% 0)" }}
+          animate={{ clipPath: "inset(0 0 0% 0)" }}
+          transition={{ duration: 1.4, delay: 0.35, ease: EASE }}
+          className={cn(
+            "relative overflow-hidden bg-bg-alt",
+            size === "lg" ? "aspect-[4/3] md:aspect-[21/9]" : "aspect-[16/9] md:aspect-[5/2]",
+          )}
+        >
+          <motion.div style={{ y }} className="absolute -inset-y-[10%] inset-x-0">
+            <Image
+              src={image}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: imagePosition }}
+            />
+          </motion.div>
+        </motion.div>
+        <div className="mt-3 flex items-baseline justify-between gap-6 font-sans text-[0.62rem] tracking-[0.2em] text-muted uppercase">
+          <span>{caption ?? eyebrow}</span>
+          <span className="hidden sm:inline">Jesse &amp; Son · Sukhumvit Soi 10, Bangkok</span>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,14 +1,14 @@
 import { MonogramSeal } from "@/components/brand/monogram";
-import { ParallaxImage } from "@/components/motion/effects";
-import { Reveal } from "@/components/motion/reveal";
+import { MaskReveal, Reveal } from "@/components/motion/reveal";
 import { SplitText } from "@/components/motion/split-text";
 import { LinkButton } from "@/components/ui/button";
 import { site } from "@/lib/site";
+import Image from "next/image";
 
-/** Closing call-to-action over a parallax photograph. */
+/** Closing spread: photograph on one page, the invitation on the other. */
 export function CtaBand({
   title = "Ready for your *perfect* suit?",
-  lead = "Book a consultation with Bangkok's most trusted family tailors. Walk-ins are welcome — appointments are given priority.",
+  lead = "Book a consultation with Bangkok's family tailors. Walk-ins are welcome — appointments are given priority.",
   image = "/media/a4e69-1633604348465.webp",
 }: {
   title?: string;
@@ -16,24 +16,31 @@ export function CtaBand({
   image?: string;
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-ink text-ivory">
-      <ParallaxImage src={image} alt="" className="absolute inset-0 -z-20" strength={14} />
-      <div className="absolute inset-0 -z-10 bg-black/70" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.6)_75%)]" />
-      <div className="container-x relative flex flex-col items-center py-28 text-center md:py-40">
-        <MonogramSeal className="mb-10 size-28 text-champagne md:size-32" />
-        <SplitText text={title} className="max-w-4xl font-serif text-5xl leading-[1.02] font-light md:text-7xl" />
-        <Reveal delay={0.3}>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-ivory/75">{lead}</p>
-        </Reveal>
-        <Reveal delay={0.45} className="mt-10 flex flex-wrap justify-center gap-4">
-          <LinkButton href="/contact#appointment" size="lg">
-            Schedule your fitting
-          </LinkButton>
-          <LinkButton href={`tel:${site.phone}`} variant="light" size="lg" arrow={false}>
-            Call {site.phoneDisplay}
-          </LinkButton>
-        </Reveal>
+    <section className="border-t border-line">
+      <div className="container-x grid items-stretch gap-10 py-20 md:py-28 lg:grid-cols-2 lg:gap-16">
+        <MaskReveal className="relative aspect-[4/3] bg-bg-alt lg:aspect-auto lg:min-h-[520px]">
+          <Image src={image} alt="" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+        </MaskReveal>
+        <div className="flex flex-col justify-between gap-10 border-t border-fg pt-6">
+          <div className="flex items-start justify-between gap-6">
+            <p className="eyebrow">The invitation</p>
+            <MonogramSeal className="size-20 shrink-0" />
+          </div>
+          <div>
+            <SplitText text={title} className="font-serif text-5xl leading-[1] font-normal md:text-[4.6rem]" />
+            <Reveal delay={0.2}>
+              <p className="mt-6 max-w-lg text-[1.2rem] leading-relaxed text-muted">{lead}</p>
+            </Reveal>
+            <Reveal delay={0.35} className="mt-9 flex flex-wrap gap-3">
+              <LinkButton href="/contact#appointment" size="lg">
+                Schedule your fitting
+              </LinkButton>
+              <LinkButton href={`tel:${site.phone}`} variant="outline" size="lg" arrow={false}>
+                Call {site.phoneDisplay}
+              </LinkButton>
+            </Reveal>
+          </div>
+        </div>
       </div>
     </section>
   );

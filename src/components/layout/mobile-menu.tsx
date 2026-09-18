@@ -6,7 +6,6 @@ import { Mail, Phone, X } from "lucide-react";
 import { useEffect } from "react";
 import { Wordmark } from "@/components/brand/logo";
 import { LineIcon, WhatsAppIcon } from "@/components/brand/icons";
-import { MonogramSeal } from "@/components/brand/monogram";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { mainNav } from "@/lib/nav";
 import { site } from "@/lib/site";
@@ -14,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+/** Full-screen "table of contents" menu. */
 export function MobileMenu({ open, onClose, pathname }: { open: boolean; onClose: () => void; pathname: string }) {
   useEffect(() => {
     if (!open) return;
@@ -33,60 +33,60 @@ export function MobileMenu({ open, onClose, pathname }: { open: boolean; onClose
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          className="fixed inset-0 z-[60] overflow-y-auto bg-ink text-ivory"
-          initial={{ clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)" }}
-          animate={{ clipPath: "circle(150% at calc(100% - 2.5rem) 2.5rem)" }}
-          exit={{ clipPath: "circle(0% at calc(100% - 2.5rem) 2.5rem)" }}
-          transition={{ duration: 0.8, ease: EASE }}
+          className="fixed inset-0 z-[60] overflow-y-auto bg-bg text-fg"
+          initial={{ clipPath: "inset(0 0 100% 0)" }}
+          animate={{ clipPath: "inset(0 0 0% 0)" }}
+          exit={{ clipPath: "inset(0 0 100% 0)" }}
+          transition={{ duration: 0.7, ease: EASE }}
         >
-          <MonogramSeal className="pointer-events-none absolute -right-24 bottom-10 size-80 opacity-10" />
-          <div className="container-x flex h-[76px] items-center justify-between">
+          <div className="container-x flex h-[68px] items-center justify-between border-b border-line">
             <Wordmark compact />
             <div className="flex items-center gap-3">
               <ThemeToggle />
               <button
                 onClick={onClose}
                 aria-label="Close menu"
-                className="flex size-11 items-center justify-center rounded-full border border-ivory/25 transition hover:border-champagne hover:text-champagne"
+                className="flex size-10 items-center justify-center border border-line transition hover:border-fg"
               >
                 <X className="size-5" strokeWidth={1.4} />
               </button>
             </div>
           </div>
 
-          <nav aria-label="Mobile" className="container-x relative pt-6 pb-10">
-            <ul>
+          <nav aria-label="Mobile" className="container-x relative pt-8 pb-10">
+            <p className="eyebrow">Contents</p>
+            <ul className="mt-4 border-t border-fg">
               {mainNav.map((item, i) => {
                 const on = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
                 return (
                   <motion.li
                     key={item.label}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.25 + i * 0.045, ease: EASE }}
-                    className="border-b border-ivory/10"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 + i * 0.04, ease: EASE }}
+                    className="border-b border-line"
                   >
                     <Link
                       href={item.href}
                       onClick={onClose}
                       className={cn(
-                        "flex items-baseline gap-4 py-3.5 font-serif text-[2rem] leading-none transition-colors",
-                        on ? "text-champagne italic" : "hover:text-champagne",
+                        "flex items-baseline justify-between gap-4 py-3.5 font-serif text-[1.9rem] leading-none transition-colors",
+                        on ? "text-accent italic" : "hover:italic",
                       )}
                     >
-                      <span className="font-sans text-[0.65rem] tracking-[0.2em] text-champagne/70">
+                      {item.label}
+                      <span className="font-sans text-[0.62rem] tracking-[0.2em] text-muted">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      {item.label}
                     </Link>
                     {item.children && (
-                      <div className="flex flex-wrap gap-x-5 gap-y-2 pb-4 pl-9">
+                      <div className="flex flex-wrap gap-x-5 gap-y-2 pb-4">
                         {item.children.map((c) => (
                           <Link
                             key={c.href}
                             href={c.href}
                             onClick={onClose}
-                            className="text-[0.7rem] tracking-[0.2em] text-ivory/60 uppercase hover:text-champagne"
+                            className="text-[0.66rem] tracking-[0.2em] text-muted uppercase hover:text-fg"
                           >
                             {c.label}
                           </Link>
@@ -101,8 +101,8 @@ export function MobileMenu({ open, onClose, pathname }: { open: boolean; onClose
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8, ease: EASE }}
-              className="mt-10 grid grid-cols-2 gap-3"
+              transition={{ duration: 0.6, delay: 0.7, ease: EASE }}
+              className="mt-10 grid grid-cols-2 gap-px border border-line bg-line"
             >
               {[
                 { href: site.line.url, label: "LINE", icon: <LineIcon className="size-5" /> },
@@ -115,9 +115,9 @@ export function MobileMenu({ open, onClose, pathname }: { open: boolean; onClose
                   href={a.href}
                   target={a.href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-[3px] border border-ivory/15 px-4 py-3.5 text-sm tracking-wide transition hover:border-champagne hover:text-champagne"
+                  className="flex items-center gap-3 bg-bg px-4 py-4 font-sans text-[0.7rem] tracking-[0.2em] uppercase transition hover:text-accent"
                 >
-                  <span className="text-champagne">{a.icon}</span>
+                  {a.icon}
                   {a.label}
                 </a>
               ))}
@@ -125,9 +125,9 @@ export function MobileMenu({ open, onClose, pathname }: { open: boolean; onClose
             <Link
               href="/contact#appointment"
               onClick={onClose}
-              className="btn-gold mt-4 flex h-14 items-center justify-center rounded-[3px] font-serif text-xl italic"
+              className="btn-primary mt-4 flex h-14 items-center justify-center font-sans text-[0.72rem] font-medium tracking-[0.24em] uppercase"
             >
-              Design Your Own →
+              Book a fitting →
             </Link>
           </nav>
         </motion.div>

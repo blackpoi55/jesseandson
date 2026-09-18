@@ -28,14 +28,14 @@ export function FilterChips<T extends string>({
             aria-selected={active}
             onClick={() => onChange(o.id)}
             className={cn(
-              "relative shrink-0 rounded-full border px-5 py-2.5 text-[0.72rem] font-medium tracking-[0.2em] uppercase transition-colors duration-300",
-              active ? "border-transparent text-ink" : "border-line text-muted hover:border-gold/60 hover:text-fg",
+              "relative shrink-0 border px-4 py-2.5 text-[0.66rem] font-medium tracking-[0.2em] uppercase transition-colors duration-300",
+              active ? "border-fg text-bg" : "border-line text-muted hover:border-fg hover:text-fg",
             )}
           >
             {active && (
               <motion.span
                 layoutId={layoutId}
-                className="btn-gold absolute inset-0 -z-0 rounded-full"
+                className="absolute inset-0 -z-0 bg-fg"
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             )}

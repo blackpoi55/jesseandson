@@ -79,7 +79,7 @@ export function Tilt({ children, className, max = 7 }: { children: React.ReactNo
   const sheen = useTransform(
     [px, py],
     ([x, y]: number[]) =>
-      `radial-gradient(600px circle at ${x * 100}% ${y * 100}%, rgba(236,211,162,0.18), transparent 45%)`,
+      `radial-gradient(600px circle at ${x * 100}% ${y * 100}%, rgba(255,255,255,0.14), transparent 45%)`,
   );
   return (
     <motion.div
@@ -128,7 +128,7 @@ export function CountUp({ value, className }: { value: string; className?: strin
   );
 }
 
-/** Thin gold bar tracking page scroll. */
+/** Thin ink rule tracking page scroll. */
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 25, mass: 0.2 });
@@ -136,7 +136,7 @@ export function ScrollProgress() {
     <motion.div
       aria-hidden
       style={{ scaleX }}
-      className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-[#a57b3f] via-[#ecd3a2] to-[#a57b3f]"
+      className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-accent"
     />
   );
 }

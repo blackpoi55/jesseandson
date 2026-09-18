@@ -23,7 +23,7 @@ export function BlogBrowser({ posts }: { posts: PostSummary[] }) {
   return (
     <div>
       <div className="relative mx-auto max-w-2xl">
-        <Search className="pointer-events-none absolute top-1/2 left-0 size-5 -translate-y-1/2 text-gold" strokeWidth={1.5} />
+        <Search className="pointer-events-none absolute top-1/2 left-0 size-5 -translate-y-1/2 text-accent" strokeWidth={1.5} />
         <input
           type="search"
           value={q}
@@ -33,10 +33,10 @@ export function BlogBrowser({ posts }: { posts: PostSummary[] }) {
           }}
           placeholder="Search the journal — fabrics, weddings, shirts…"
           aria-label="Search articles"
-          className="w-full border-0 border-b border-line bg-transparent py-5 pr-10 pl-9 font-serif text-2xl text-fg outline-none placeholder:text-subtle focus:border-gold"
+          className="w-full border-0 border-b border-line bg-transparent py-5 pr-10 pl-9 font-serif text-2xl text-fg outline-none placeholder:text-subtle focus:border-accent"
         />
         {q && (
-          <button onClick={() => setQ("")} aria-label="Clear search" className="absolute top-1/2 right-0 -translate-y-1/2 text-muted hover:text-gold">
+          <button onClick={() => setQ("")} aria-label="Clear search" className="absolute top-1/2 right-0 -translate-y-1/2 text-muted hover:text-accent">
             <X className="size-5" />
           </button>
         )}
@@ -70,10 +70,10 @@ export function BlogBrowser({ posts }: { posts: PostSummary[] }) {
         <div className="mt-20 flex justify-center">
           <button
             onClick={() => setLimit((l) => l + PAGE)}
-            className="group inline-flex h-14 items-center gap-3 rounded-full border border-gold/70 px-10 font-serif text-xl italic transition-all duration-500 hover:bg-gold hover:text-ink"
+            className="group inline-flex h-14 items-center gap-3 rounded-full border border-accent/70 px-10 font-serif text-xl italic transition-all duration-500 hover:bg-accent hover:text-ink"
           >
             Load more articles
-            <span className="text-sm text-gold transition-colors group-hover:text-ink">
+            <span className="text-sm text-accent transition-colors group-hover:text-ink">
               ({results.length - limit} more)
             </span>
           </button>

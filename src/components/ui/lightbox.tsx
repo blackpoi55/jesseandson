@@ -137,7 +137,7 @@ export function Lightbox({
                 }}
                 aria-label={`Show image ${i + 1}`}
                 className={cn(
-                  "relative h-14 w-20 shrink-0 overflow-hidden rounded-[2px] border transition",
+                  "relative h-14 w-20 shrink-0 overflow-hidden border transition",
                   i === index ? "border-champagne opacity-100" : "border-transparent opacity-40 hover:opacity-80",
                 )}
               >
