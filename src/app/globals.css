@@ -406,32 +406,78 @@
   }
 }
 
-/* Opening intro (components/layout/preloader.tsx). Pure CSS so it plays from the first paint.
-   The curtain lifts after 2.3s and is then out of the way. */
+/* Opening intro (components/layout/preloader.tsx). Pure CSS so it plays from the first paint:
+   the masthead sets, scissors snip along the dashed line, and the two halves part at the cut. */
 .intro {
-  animation: intro-lift 1s cubic-bezier(0.76, 0, 0.24, 1) 2.3s both;
+  pointer-events: none;
+  animation: intro-gone 0s linear 3s both;
 }
-@keyframes intro-lift {
-  to {
-    transform: translateY(-100%);
-    visibility: hidden;
-  }
+.intro-half {
+  pointer-events: auto;
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  animation-delay: 2s;
+  animation-fill-mode: both;
 }
-.intro-stitch {
-  animation: intro-stitch 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
+.intro-half-top {
+  animation-name: intro-part-up;
 }
-.intro-needle {
-  animation: intro-needle 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
+.intro-half-bottom {
+  animation-name: intro-part-down;
 }
 .intro-letter {
   display: inline-block;
   animation: enter-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(0.45s + var(--i, 0) * 0.05s);
+  animation-delay: calc(0.1s + var(--i, 0) * 0.04s);
 }
 .intro-tagline {
-  animation: enter-track 1.2s ease 1s both;
+  animation: enter-track 1.2s ease 0.5s both;
 }
-@keyframes intro-stitch {
+/* the "cut here" guide draws in, then goes with the cut */
+.intro-guide {
+  animation:
+    intro-draw 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both,
+    intro-fade 0.2s ease 2s forwards;
+}
+/* scissors travel the line; the cut trails from their pivot */
+.intro-scissors {
+  animation: intro-travel 1.3s cubic-bezier(0.45, 0, 0.4, 1) 0.7s both;
+}
+.intro-cut {
+  animation: intro-fade 0.2s ease 2s forwards;
+}
+.intro-blade-a,
+.intro-blade-b {
+  transform-box: view-box;
+  transform-origin: 64px 30px;
+  animation-duration: 0.325s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.7s;
+  animation-iteration-count: 4;
+  animation-fill-mode: both;
+}
+.intro-blade-a {
+  animation-name: intro-snip-a;
+}
+.intro-blade-b {
+  animation-name: intro-snip-b;
+}
+@keyframes intro-gone {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes intro-part-up {
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes intro-part-down {
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes intro-draw {
   from {
     clip-path: inset(0 100% 0 0);
   }
@@ -439,12 +485,35 @@
     clip-path: inset(0 0 0 0);
   }
 }
-@keyframes intro-needle {
+@keyframes intro-fade {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes intro-travel {
   from {
-    transform: translateX(0);
+    transform: translate(-140px, -50%);
   }
   to {
-    transform: translateX(100%);
+    transform: translate(calc(100vw + 40px), -50%);
+  }
+}
+@keyframes intro-snip-a {
+  0%,
+  100% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+}
+@keyframes intro-snip-b {
+  0%,
+  100% {
+    transform: rotate(15deg);
+  }
+  50% {
+    transform: rotate(1deg);
   }
 }
 
@@ -479,7 +548,7 @@
   animation-duration: 2s;
   animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
 }
-/* first visit: wait for the intro curtain to lift */
+/* on a full page load, wait for the intro to cut open */
 html:not(.intro-seen) :is(.enter-rise, .enter-up, .enter-track, .enter-seal, .enter-wipe) {
   animation-delay: calc(var(--d, 0s) + 2.1s);
 }
