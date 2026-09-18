@@ -194,7 +194,7 @@ export function Header() {
                       View all →
                     </Link>
                   </div>
-                  <div className={cn("grid gap-6", active.children.length > 2 ? "grid-cols-4" : "grid-cols-2")}>
+                  <div className={cn("grid gap-6", active.children.length > 4 ? "grid-cols-5" : active.children.length > 2 ? "grid-cols-4" : "grid-cols-2")}>
                     {active.children.map((child, i) => (
                       <motion.div
                         key={child.href}

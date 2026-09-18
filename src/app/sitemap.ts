@@ -10,6 +10,7 @@ const pages = [
   { path: "/products/women", priority: 0.9 },
   { path: "/products/fabrics", priority: 0.8 },
   { path: "/products/shoes", priority: 0.8 },
+  { path: "/showroom", priority: 0.8 },
   { path: "/process", priority: 0.8 },
   { path: "/craftsmanship", priority: 0.7 },
   { path: "/testimonials", priority: 0.7 },

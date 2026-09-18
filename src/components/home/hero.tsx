@@ -26,9 +26,10 @@ const slides = [
 const contents = [
   { no: "01", title: "The Collections", sub: "Suits, shirts & coats for him and her", href: "/products" },
   { no: "02", title: "The Fabric Library", sub: "Zegna, VBC, Loro Piana, Drago", href: "/products/fabrics" },
-  { no: "03", title: "Three Days, One Suit", sub: "Our tailoring process", href: "/process" },
-  { no: "04", title: "Made for Your Feet", sub: "Goodyear-welted shoes", href: "/products/shoes" },
-  { no: "05", title: "Notes from the Cutting Table", sub: "The journal", href: "/blog" },
+  { no: "03", title: "The Suit in the Round", sub: "Our 360° showroom", href: "/showroom" },
+  { no: "04", title: "Three Days, One Suit", sub: "Our tailoring process", href: "/process" },
+  { no: "05", title: "Made for Your Feet", sub: "Goodyear-welted shoes", href: "/products/shoes" },
+  { no: "06", title: "Notes from the Cutting Table", sub: "The journal", href: "/blog" },
 ];
 
 const features = [

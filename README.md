@@ -47,6 +47,18 @@ src/lib/                 Site details (address, phone, LINE…), navigation, blo
 To change the phone number, address, LINE or social links, edit `src/lib/site.ts`.
 To edit prices, products or FAQ answers, edit the matching file in `src/content/`.
 
+## 360° showroom
+
+`/showroom` (and the teaser on the home page) turns a suit through 360° from an image sequence:
+`public/media/360/<look>/01.webp` … `72.webp`, one frame every 5°, 4:5 portrait. The frames there now are
+**rendered previews**. To use real photography:
+
+1. Put the garment on the dress form on a turntable, camera on a tripod, even light, plain light background.
+2. Shoot 72 photos (5° apart), or record one slow full turn on video and extract 72 frames.
+3. Export as WebP (about 960×1200), name them `01.webp`–`72.webp`, and replace the files in the look's folder.
+
+Looks, names and spec sheets are in `src/content/showroom.ts`; add a folder and an entry there to add a look.
+
 ## Old URLs
 
 Old jesseandson.com addresses are redirected permanently to their new pages (see `next.config.ts`),

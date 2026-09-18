@@ -7,6 +7,8 @@ import { ReasonsScroller } from "@/components/home/reasons-scroller";
 import { CountUp, ParallaxImage } from "@/components/motion/effects";
 import { MaskReveal, Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { PostCard } from "@/components/post-card";
+import { SpinViewer } from "@/components/spin-viewer";
+import { spinFrames } from "@/lib/spin";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
 import { LinkButton, TextLink } from "@/components/ui/button";
 import { ImageCard } from "@/components/ui/image-card";
@@ -132,6 +134,32 @@ export default function HomePage() {
           <CollectionPanels />
           <Reveal className="mt-8 flex justify-end">
             <TextLink href="/products">All products</TextLink>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 360° showroom teaser */}
+      <section className="border-t border-line py-20 md:py-28">
+        <div className="container-x grid items-center gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <SectionHeading
+              eyebrow="New · The showroom"
+              number="p. 18"
+              title="The suit, in the *round.*"
+              lead="Grab the jacket and turn it — lapels, pockets, shoulders and vent, from every angle. Three looks to explore, each cut to measure in any cloth from our library."
+            />
+            <Reveal delay={0.2} className="mt-10 flex flex-wrap gap-3">
+              <LinkButton href="/showroom">Enter the showroom</LinkButton>
+              <LinkButton href="/contact#appointment" variant="outline" arrow={false}>
+                Book a fitting
+              </LinkButton>
+            </Reveal>
+          </div>
+          <Reveal className="lg:col-span-6 lg:col-start-7">
+            <SpinViewer frames={spinFrames("navy")} alt="The Navy Two-Piece on a tailor's dress form" compact />
+            <p className="mt-2 font-sans text-[0.62rem] tracking-[0.2em] text-muted uppercase">
+              Fig. — The Navy Two-Piece · rendered preview
+            </p>
           </Reveal>
         </div>
       </section>

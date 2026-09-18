@@ -12,6 +12,7 @@ export const mainNav: NavItem[] = [
       { label: "Women", href: "/products/women", description: "Suits, blazers, dresses, skirts & coats", image: "/media/76983-custom-tailor.webp" },
       { label: "Fabrics", href: "/products/fabrics", description: "Handpicked cloth from the world's mills", image: "/media/1bbe4-ee9f1-1633604348404.webp" },
       { label: "Shoes", href: "/products/shoes", description: "Goodyear-welted, made for your feet", image: "/media/eeeb0-custom-leather-shoes.webp" },
+      { label: "360° Showroom", href: "/showroom", description: "Drag to turn the suit all the way round", image: "/media/360/navy/06.webp" },
     ],
   },
   {
@@ -43,6 +44,7 @@ export const footerNav = {
     { label: "Women's tailoring", href: "/products/women" },
     { label: "Fabrics", href: "/products/fabrics" },
     { label: "Custom shoes", href: "/products/shoes" },
+    { label: "360° Showroom", href: "/showroom" },
     { label: "Tailoring process", href: "/process" },
     { label: "Details & construction", href: "/craftsmanship" },
     { label: "Price guide", href: "/pricing" },
