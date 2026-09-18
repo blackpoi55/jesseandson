@@ -3,39 +3,74 @@
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { Plus } from "lucide-react";
+import { useRef, useState } from "react";
+import type { LookId } from "@/components/mannequin/model";
 import { Mannequin3D } from "@/components/mannequin/mannequin-3d";
+import { PhotoSpin } from "@/components/photo-spin";
 import { LinkButton } from "@/components/ui/button";
-import { showroomLooks, showroomNote } from "@/content/showroom";
+import { showroomLooks } from "@/content/showroom";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const liveLooks = showroomLooks.flatMap((l) => (l.kind === "3d" ? [l.id] : [])) as LookId[];
 
-/** Look picker + 360° viewer + spec sheet. The rotation angle is kept when switching looks. */
+/**
+ * Look picker + 360° viewer + spec sheet. The rotation angle is kept when switching between
+ * live 3D looks. Photographed looks have detail hotspots, also listed beside the viewer.
+ */
 export function Showroom() {
   const [index, setIndex] = useState(0);
+  const [detail, setDetail] = useState<string | null>(null);
+  const figure = useRef<HTMLElement>(null);
   const look = showroomLooks[index];
+
+  const showDetail = (id: string) => {
+    setDetail(id);
+    // on small screens the list sits below the viewer: bring the viewer into view
+    const r = figure.current?.getBoundingClientRect();
+    if (r && (r.top < 0 || r.bottom > window.innerHeight)) figure.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-      <figure className="lg:col-span-7">
-        <Mannequin3D look={look.id} alt={look.name} preload={showroomLooks.map((l) => l.id).filter((id) => id !== look.id)} />
+      <figure ref={figure} className="scroll-mt-28 lg:col-span-7">
+        {look.kind === "photo" ? (
+          <PhotoSpin
+            key={look.id}
+            set={look.spin}
+            alt={look.name}
+            details={look.hotspots}
+            detail={detail}
+            onDetailChange={setDetail}
+          />
+        ) : (
+          <Mannequin3D
+            look={look.id}
+            alt={look.name}
+            aspect="aspect-[3/4]"
+            preload={liveLooks.filter((id) => id !== look.id)}
+          />
+        )}
         <figcaption className="mt-3 font-sans text-[0.62rem] tracking-[0.2em] text-muted uppercase">
-          Fig. {String(index + 1).padStart(2, "0")} — {look.name} · {showroomNote}
+          Fig. {String(index + 1).padStart(2, "0")} — {look.name} · {look.note}
         </figcaption>
       </figure>
 
       <div className="lg:col-span-5">
         {/* Look picker */}
         <p className="eyebrow">Choose a look</p>
-        <ul role="tablist" className="mt-4 grid grid-cols-3 gap-3">
+        <ul role="tablist" className="mt-4 grid grid-cols-4 gap-3">
           {showroomLooks.map((l, i) => (
             <li key={l.id}>
               <button
                 type="button"
                 role="tab"
                 aria-selected={i === index}
-                onClick={() => setIndex(i)}
+                onClick={() => {
+                  setIndex(i);
+                  setDetail(null);
+                }}
                 className="group block w-full text-left"
               >
                 <span
@@ -45,7 +80,7 @@ export function Showroom() {
                   )}
                 >
                   <Image
-                    src={`/media/360/${l.id}/01.webp`}
+                    src={l.thumb}
                     alt=""
                     fill
                     sizes="160px"
@@ -86,13 +121,48 @@ export function Showroom() {
               ))}
             </dl>
 
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {look.details.map((d) => (
-                <li key={d} className="border border-line px-3 py-1.5 font-sans text-[0.62rem] tracking-[0.16em] uppercase">
-                  {d}
-                </li>
-              ))}
-            </ul>
+            {look.kind === "photo" ? (
+              <div className="mt-8">
+                <p className="eyebrow">Explore the details</p>
+                <ol className="mt-3 border-t border-line">
+                  {look.hotspots.map((d, i) => (
+                    <li key={d.id} className="border-b border-line">
+                      <button
+                        type="button"
+                        onClick={() => (detail === d.id ? setDetail(null) : showDetail(d.id))}
+                        aria-pressed={detail === d.id}
+                        className={cn(
+                          "group flex w-full items-center gap-4 py-3 text-left transition-colors",
+                          detail === d.id ? "text-accent" : "hover:text-accent",
+                        )}
+                      >
+                        <span className="font-sans text-[0.6rem] tracking-[0.2em] text-muted tabular-nums">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="flex-1 font-serif text-lg">{d.label}</span>
+                        <span
+                          className={cn(
+                            "flex size-6 items-center justify-center rounded-full border transition",
+                            detail === d.id ? "rotate-45 border-accent" : "border-line group-hover:border-accent",
+                          )}
+                          aria-hidden
+                        >
+                          <Plus className="size-3" strokeWidth={1.8} />
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : (
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {look.details.map((d) => (
+                  <li key={d} className="border border-line px-3 py-1.5 font-sans text-[0.62rem] tracking-[0.16em] uppercase">
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            )}
 
             <div className="mt-8 flex flex-wrap gap-3">
               <LinkButton href="/contact#appointment">Book this look</LinkButton>

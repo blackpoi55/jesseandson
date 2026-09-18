@@ -5,16 +5,16 @@ import { Hand, Maximize2, Minus, Pause, Play, Plus, RotateCw } from "lucide-reac
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-type Frame = ImageBitmap | HTMLImageElement;
+export type Frame = ImageBitmap | HTMLImageElement;
 
-const frameWidth = (f: Frame) => ("naturalWidth" in f ? f.naturalWidth : f.width);
-const frameHeight = (f: Frame) => ("naturalHeight" in f ? f.naturalHeight : f.height);
-const closeFrame = (f: Frame) => {
+export const frameWidth = (f: Frame) => ("naturalWidth" in f ? f.naturalWidth : f.width);
+export const frameHeight = (f: Frame) => ("naturalHeight" in f ? f.naturalHeight : f.height);
+export const closeFrame = (f: Frame) => {
   if ("close" in f) f.close();
 };
 
 /** Download and fully decode a frame up front so drawing it never stalls. */
-async function decodeFrame(src: string): Promise<Frame> {
+export async function decodeFrame(src: string): Promise<Frame> {
   const img = new Image();
   img.decoding = "async";
   img.src = src;

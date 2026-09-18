@@ -9,14 +9,14 @@ import { Showroom } from "@/components/showroom";
 export const metadata: Metadata = {
   title: "360° Showroom — Turn the Suit Around",
   description:
-    "Drag to turn our suits through 360°: a navy two-piece, a chalk-stripe peak lapel and a midnight tuxedo — each cut to measure at Jesse & Son, Bangkok.",
+    "Drag to turn our suits through 360°: a navy check photographed in our studio, plus a navy two-piece, a chalk-stripe peak lapel and a midnight tuxedo in live 3D. Each is cut to measure at Jesse & Son, Bangkok.",
   alternates: { canonical: "/showroom" },
 };
 
 const how = [
   { Icon: Hand, title: "Drag to turn", body: "Grab the suit and spin it — let go and it keeps turning." },
   { Icon: Search, title: "Zoom in", body: "Double-click or use + to inspect lapels, pockets and buttons." },
-  { Icon: Shirt, title: "Compare looks", body: "Switch looks and the angle stays put, so you can compare side by side." },
+  { Icon: Shirt, title: "Compare looks", body: "Start with a real suit from our studio, then switch between the cuts in live 3D." },
 ];
 
 export default function ShowroomPage() {

@@ -49,18 +49,40 @@ To edit prices, products or FAQ answers, edit the matching file in `src/content/
 
 ## 360° showroom
 
-`/showroom` (and the teaser on the home page) shows a **live 3D** dress form wearing the suit, rendered in the
-browser with Three.js: drag to turn (with inertia), drag vertically to tilt, double-click or +/- to zoom. The model
-is built in code (`src/components/mannequin/model.ts`); Three.js loads only when the viewer is on the page.
+`/showroom` has two kinds of look:
 
-If a device can't run WebGL, the viewer falls back to a 360° image sequence in
-`public/media/360/<look>/01.webp` … `72.webp` (one frame every 5°, 4:5 portrait). The same folder's `01.webp`
-is used as the loading poster and the look thumbnail. To show real photography instead:
+- **Studio photographs** (`kind: "photo"`): a real suit shot on the dress form from every side and shown by
+  `src/components/photo-spin.tsx`. Drag to turn, double-click or +/- to zoom. While it moves, it plays a full
+  frame sequence (the photos plus in-between frames made with optical flow), so the spin stays smooth. When it
+  stops, it always lands on an actual photograph and swaps in the sharp original.
+- **Live 3D** (`kind: "3d"`): a dress form rendered in the browser with Three.js
+  (`src/components/mannequin/`), also used for the teaser on the home page. If a device can't run WebGL it
+  falls back to the image sequence in `public/media/360/<look>/01.webp` … `72.webp`, which also supplies the
+  poster and thumbnail.
 
-1. Put the garment on the dress form on a turntable, camera on a tripod, even light, plain light background.
-2. Shoot 72 photos (5° apart), or record one slow full turn on video and extract 72 frames.
-3. Export as WebP (about 960×1200), name them `01.webp`–`72.webp`, replace the files, and use
-   `<SpinViewer frames={spinFrames("<look>")} />` in `src/components/showroom.tsx` instead of `<Mannequin3D>`.
+To add another photographed look:
+
+1. Put the garment on the dress form, camera on a tripod (don't move it), even light, plain backdrop. Turn the
+   form a little between shots and go all the way round once: 30–40 photos is enough. Keep people out of the
+   frame.
+2. Copy `scripts/spin360/studio-navy.json` to `<new-id>.json`. Set the crop, and list the photo numbers for one
+   full turn in `sequence`. Leave out any repeats at the start or end. `patches` fixes a frame with something
+   stray at its left edge.
+3. Run `python scripts/spin360/build.py "<folder of JPGs>" scripts/spin360/<new-id>.json`. You need Python 3.10+
+   with `numpy` and `opencv-python-headless`. It writes the frames to `public/media/360/<new-id>/` and the
+   viewer data to `src/content/spins/<new-id>.json`.
+4. Add a `kind: "photo"` look that imports that JSON in `src/content/showroom.ts`.
+
+**Detail hotspots.** These are the + points on the photos that open a close-up and notes. Each one is set in
+the config's `details`:
+
+- `anchors`: one or two photos where the detail is clearly visible, with the point's position in the
+  960×1280 working frame.
+- `crop`: the box for the close-up.
+
+The script follows each point to the neighbouring photos with optical flow, and stops where the point turns
+out of view. To redo only this step, run it with `--details-only`. The text for each hotspot is in `hotspots`
+in `src/content/showroom.ts`. The current copy is sample text and still needs checking against the real suit.
 
 Looks, names and spec sheets are in `src/content/showroom.ts`.
 

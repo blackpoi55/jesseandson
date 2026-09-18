@@ -25,6 +25,7 @@ export function Mannequin3D({
   alt,
   preload = [],
   compact = false,
+  aspect = "aspect-[4/5]",
   className,
 }: {
   look: LookId;
@@ -32,6 +33,8 @@ export function Mannequin3D({
   /** Other looks to build in the background so switching is instant. */
   preload?: LookId[];
   compact?: boolean;
+  /** Tailwind aspect-ratio class for the stage. */
+  aspect?: string;
   className?: string;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
@@ -293,7 +296,8 @@ export function Mannequin3D({
         onPointerCancel={endDrag}
         onDoubleClick={() => setZoom(zoomTarget.current > 1 ? 1 : 2)}
         className={cn(
-          "relative aspect-[4/5] touch-pan-y overflow-hidden outline-none",
+          "relative touch-pan-y overflow-hidden outline-none",
+          aspect,
           grabbing ? "cursor-grabbing" : "cursor-grab",
         )}
         style={{ backgroundColor: "#f1eee8" }}
