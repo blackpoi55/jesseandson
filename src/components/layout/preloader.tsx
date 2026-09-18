@@ -3,25 +3,23 @@
 import { useEffect, useState } from "react";
 
 /**
- * First-visit intro: a needle stitches a line, the masthead appears,
- * then the curtain lifts. Shown once per browser session.
+ * Opening intro on every page load (first visit and reload): a needle
+ * stitches a line, the masthead appears, then the curtain lifts.
  *
  * It runs entirely on CSS (globals.css, "intro"), timed from the first
  * paint, so it never waits for the page's scripts and never stalls half-drawn.
- * The inline script in the root layout decides before paint whether this
- * session has seen it (<html class="intro-seen">), so a reload skips it.
+ * Moving between pages inside the site doesn't replay it.
  */
 export function Preloader() {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
     const root = document.documentElement;
-    const seen = root.classList.contains("intro-seen");
     const since = performance.now();
     // gone from view after ~3.3s (CSS); remove it from the page once it has lifted
-    const t = setTimeout(() => setShow(false), seen ? 0 : Math.max(0, 3600 - since));
+    const t = setTimeout(() => setShow(false), Math.max(0, 3600 - since));
     // entrances on this first page wait for the curtain (globals.css); later pages animate straight away
-    const done = setTimeout(() => root.classList.add("intro-seen"), seen ? 0 : Math.max(0, 6000 - since));
+    const done = setTimeout(() => root.classList.add("intro-seen"), Math.max(0, 6000 - since));
     return () => {
       clearTimeout(t);
       clearTimeout(done);

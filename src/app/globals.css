@@ -406,11 +406,8 @@
   }
 }
 
-/* First-visit intro (components/layout/preloader.tsx). Pure CSS so it plays from the first paint. */
-html.intro-seen .intro {
-  display: none;
-}
-/* the curtain lifts after 2.3s and is then out of the way */
+/* Opening intro (components/layout/preloader.tsx). Pure CSS so it plays from the first paint.
+   The curtain lifts after 2.3s and is then out of the way. */
 .intro {
   animation: intro-lift 1s cubic-bezier(0.76, 0, 0.24, 1) 2.3s both;
 }
